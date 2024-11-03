@@ -25,3 +25,8 @@ insert into exam (student_id, course_id, date, grade) values (1, 1, '2016-02-01'
 insert into exam (student_id, course_id, date, grade) values (1, 2, '2016-04-19', 8);
 insert into exam (student_id, course_id, date, grade) values (2, 1, '2016-02-01', 10);
 insert into exam (student_id, course_id, date, grade) values (2, 2, '2016-04-19', 10);
+
+
+insert into app_user (email, first_name, last_name) values ('sergej@nesto.com', 'Sergej', 'Vla');
+insert into app_user (email, first_name, last_name) values ('sergej1@nesto.com', 'Serge1j', 'Nina');
+insert into app_user (email, first_name, last_name) values ('sergej2@nesto.com', 'Sergej1', 'Jovana');
