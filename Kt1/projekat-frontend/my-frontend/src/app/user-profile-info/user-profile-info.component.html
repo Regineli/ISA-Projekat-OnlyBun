@@ -1,0 +1,46 @@
+<div class="profile-container" *ngIf="userDetails">
+    <div class="user-profile">
+      <h2>User Profile</h2>
+      <p><strong>Username:</strong> {{ userDetails.username }}</p>
+      <p><strong>Email:</strong> {{ userDetails.email }}</p>
+      <p><strong>First Name:</strong> {{ userDetails.firstName }}</p>
+      <p><strong>Last Name:</strong> {{ userDetails.lastName }}</p>
+      <p><strong>Address:</strong> {{ userDetails.address }}</p>
+    </div>
+  
+    <div *ngIf="bunnyPosts && bunnyPosts.length > 0" class="posts-container">
+      <h3>Bunny Posts</h3>
+      <div *ngFor="let post of bunnyPosts" class="bunny-post">
+        <p><strong>Details:</strong> {{ post.details }}</p>
+        <div class="post-photo-wrapper">
+          <img [src]="post.photo" alt="Post Photo" class="post-photo" />
+        </div>
+        <div class="post-buttons">
+            <button class="post-button" (click)="likePost(post.id)" *ngIf="loggedUser">Like</button>
+            <button class="post-button" (click)="commentPost(post.id)" *ngIf="loggedUser">Comment</button>
+            <button class="post-button" (click)="viewComments(post.id)">View Comments</button>
+          </div>
+
+          <div *ngIf="post.commentsVisible && post.comment.data.length > 0" class="comments-section">
+            <h4>Comments:</h4>
+            <div *ngFor="let comment of post.comment.data" class="comment">
+              <p><strong>User ID:</strong> {{ comment.userId }}</p>
+              <p>{{ comment.details }}</p>
+            </div>
+          </div>
+      </div>
+      
+    </div>
+
+    
+  
+    <div *ngIf="!bunnyPosts || bunnyPosts.length === 0">
+      <p>No bunny posts found.</p>
+    </div>
+  </div>
+  
+  <!-- If no loggedUser, show message -->
+  <div *ngIf="!userDetails" class="no-user-message">
+    <p>Invalid user selected</p>
+  </div>
+  

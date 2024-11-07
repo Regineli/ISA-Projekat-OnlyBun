@@ -1,0 +1,31 @@
+<p>bunny-post works!</p>
+
+
+<button (click)="getBunnyPost()">Get Bunny Posts</button>
+
+
+<h2>Bunny Post Details</h2>
+<div *ngFor="let bunny of bunnyPosts">
+
+        <div>
+        <strong>ID:</strong> {{ bunny.id }}
+        </div>
+        <div>
+        <strong>Details:</strong> {{ bunny.details }}
+        </div>
+        <div>
+        <strong>Photo:</strong>
+        <img [src]="bunny.photo" alt="Bunny Photo" width="200" />
+        </div>
+        <div>
+        <strong>User Info:</strong>
+        <div>
+            <strong>Email:</strong> {{ bunny.user.email }}
+        </div>
+        <div>
+            <strong>Full Name:</strong> {{ bunny.user.firstName }} {{ bunny.user.lastName }}
+        </div>
+        </div>
+
+</div>
+  
