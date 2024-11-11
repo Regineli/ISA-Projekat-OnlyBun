@@ -23,4 +23,7 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
 	
 	@Query("select u from BunnyPost u join fetch u.comments c where u.id =?1")
 	public Course findOneWithComments(Integer bunnyPostID);
+	
+	@Query("SELECT MAX(b.id) FROM BunnyPost b")
+    Integer findMaxId();
 }

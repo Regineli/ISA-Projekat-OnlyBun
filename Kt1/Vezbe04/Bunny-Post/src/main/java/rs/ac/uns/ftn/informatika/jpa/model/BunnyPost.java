@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.tools.DocumentationTool.Location;
 
 /*
  * @Entity anotacija naznacava da je klasa perzistentni entitet. Klasa ima konstruktor bez parametara.
@@ -76,8 +78,14 @@ public class BunnyPost {
     @JoinColumn(name = "user_id", nullable = false) // 'user_id' is the foreign key
     private User user;
 	
+	@Column(name="time", nullable = false, unique = false)
+	private LocalDateTime time;	
+	
+	
 	@OneToMany(mappedBy = "bunnyPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
+	
+
 	
 
 	
@@ -147,6 +155,15 @@ public class BunnyPost {
 	public void setPhoto(String photo) {
 	    this.photo = photo;
 	}
+	
+	public LocalDateTime getTime() {
+		return time;
+	}
+
+	public void setTime(LocalDateTime time) {
+		this.time = time;
+	}
+	
 	
 	
 	/*

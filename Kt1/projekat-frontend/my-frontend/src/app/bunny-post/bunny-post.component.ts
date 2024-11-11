@@ -13,7 +13,7 @@ interface User {
 }
 
 // Define the structure of your BunnyPost based on your API response
-interface BunnyPost {
+export interface BunnyPost {
   id: number;
   details: string;
   photo: string;
@@ -60,4 +60,5 @@ export class BunnyPostComponent {
       }
     );
   }
+
 }

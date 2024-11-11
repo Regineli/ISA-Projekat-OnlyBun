@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ public class BunnyPostDTO {
     private String photo;
     private UserDTO user; // Add UserDTO field
     private List<CommentDTO> comments; // Add comments field
+    private LocalDateTime time;
 
     public BunnyPostDTO(BunnyPost bunnyPost) {
         this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto());
@@ -31,6 +33,7 @@ public class BunnyPostDTO {
         this.id = id;
         this.details = details;
         this.photo = photo;
+        this.time=LocalDateTime.now();
     }
     
 
@@ -49,6 +52,9 @@ public class BunnyPostDTO {
     public UserDTO getUser() {
         return user; // Add getter for user
     }
+    public LocalDateTime time() {
+		return time;
+	}
 
 	public void setComments(List<CommentDTO> commentDTOs) {
 		// TODO Auto-generated method stub

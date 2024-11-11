@@ -62,6 +62,7 @@ public class UserController {
         this.validator = validator;
     }
 	
+
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
 

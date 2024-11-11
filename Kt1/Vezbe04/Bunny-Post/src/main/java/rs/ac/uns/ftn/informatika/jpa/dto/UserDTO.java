@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
+import rs.ac.uns.ftn.informatika.jpa.model.Role;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
 
@@ -12,6 +13,7 @@ public class UserDTO {
     private String password; // Added field for password
     private String address;  // Added field for address
     private UserStatus status; // Added field for user status
+    private Role role;
 
     // Default constructor
     public UserDTO() {
@@ -33,6 +35,7 @@ public class UserDTO {
         this.password = password;
         this.address = address;
         this.status = status; // Initialize the status
+        this.role=role;
     }
 
     // Getters and setters
@@ -99,4 +102,5 @@ public class UserDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+   
 }

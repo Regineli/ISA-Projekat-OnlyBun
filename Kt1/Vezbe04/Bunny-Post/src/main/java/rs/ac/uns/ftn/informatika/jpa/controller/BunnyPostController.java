@@ -126,5 +126,11 @@ public class BunnyPostController {
 
 	    return new ResponseEntity<>(commentDTOs, HttpStatus.OK);
 	}
+	
+	@GetMapping("/nextId")
+	public ResponseEntity<Integer> getNextId() {
+	    Integer nextId = bunnyPostService.findNextId();
+	    return new ResponseEntity<>(nextId, HttpStatus.OK);
+	}
 
 }

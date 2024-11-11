@@ -1,6 +1,12 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.validation.constraints.Email;
 import java.util.Objects;
 import java.util.Set;
@@ -16,6 +22,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /*
@@ -43,7 +57,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "app_user")
-public class User {
+public class User implements UserDetails {
 
 	/*
 	 * Svaki entitet ima svoj kljuc (surogat kljuc), dok se strategija generisanja
@@ -94,7 +108,15 @@ public class User {
 	@Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatus status = UserStatus.PENDING_REGISTRATION_CONFIRMATION;
-
+	
+	@Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
 	
 	public String getUsername() {
 		return username;
@@ -109,6 +131,8 @@ public class User {
 	}
 
 	public void setPassword(String password) {
+		Timestamp now = new Timestamp(new Date().getTime());
+        this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
 
@@ -127,6 +151,15 @@ public class User {
 	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
+	
+	public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+    
+    public List<Role> getRoles() {
+       return roles;
+    }
+
 
 	/*
 	public Set<Comment> getComments() {
@@ -175,7 +208,7 @@ public class User {
 		super();
 	}
 
-	public User(Integer id, String email, String username, String password, String firstName, String lastName, String address, UserStatus status) {
+	public User(Integer id, String email, String username, String password, String firstName, String lastName, String address, UserStatus status, List<Role> roles) {
 	    super();
 	    this.id = id;
 	    this.email = email;
@@ -184,7 +217,9 @@ public class User {
 	    this.firstName = firstName;
 	    this.lastName = lastName;
 	    this.address = address;
-	    this.status = status;  // Assign the status field
+	    this.status = status;
+	    this.roles=roles;
+
 	}
 
 	public Integer getId() {
@@ -280,6 +315,14 @@ public class User {
 		}
 		return Objects.equals(email, s.email);
 	}
+	
+	public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
 
 	@Override
 	public int hashCode() {
@@ -290,4 +333,34 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", lastName=" + lastName + ", password=" + password + ", status=" + status + "]";
 	}
+	
+	@JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+	
+	@JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+	
+	@Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
 }

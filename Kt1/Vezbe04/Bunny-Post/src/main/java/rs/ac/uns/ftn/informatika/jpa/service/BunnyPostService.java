@@ -50,4 +50,11 @@ public class BunnyPostService {
 	    return commentDTOs;
 	}
 	
+	public Integer findNextId() {
+        Integer maxId = bunnyPostRepository.findMaxId();
+        return (maxId != null) ? maxId + 1 : 1;
+    }
+	
+	
+	
 }

@@ -43,6 +43,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public User findOneByEmail(String email);
+	public User findByUsername(String username);
 
 	/*
 	 * Pronalazi sve objekte tipa User i vraca onoliko objekata koliko je
