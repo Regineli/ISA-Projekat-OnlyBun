@@ -4,9 +4,7 @@
     <button class="top-button" *ngIf="!loggedUser" (click)="navigateToLogin()">Log In</button>
 
     <!-- Conditionally display logged-in user's username -->
-     <div class="user">
-      <img src="assets\images\user.png" alt="user">
-     </div>
+    
     <div *ngIf="loggedUser" (click)="toggleDropdown()">
         <span class="logged-username">{{ loggedUser.username }}</span>
     </div>

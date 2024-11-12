@@ -28,30 +28,29 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   // Login function to call backend and authenticate user
-  login(email: string, password: string) {
-    const apiUrl = 'http://localhost:8080/api/users/login'; // Your API endpoint
-
-    // Prepare the credentials as form data
-    const credentials = new HttpParams()
-      .set('email', email)
-      .set('password', password);
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-
-    // Make POST request with email and password
-    return this.http.post<User>(apiUrl, credentials.toString(), { headers }).pipe(
+  login(username: string, password: string) {
+    const apiUrl = 'http://localhost:8080/auth/login'; // Your API endpoint
+  
+    // Prepare the credentials as a JSON object
+    const credentials = { username, password };
+  
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  
+    // Make POST request with username and password as JSON
+    return this.http.post<User>(apiUrl, credentials, { headers }).pipe(
       map(user => {
         // If user is returned, set the user in the service
         this.userSubject.next(user);
       }),
       catchError((error) => {
-        // Handle error (invalid email/password or other errors)
+        // Handle error (invalid username/password or other errors)
         console.error('Login failed:', error);
         this.userSubject.next(null); // Reset user if login fails
         throw error; // Propagate the error
       })
     );
   }
+  
   // Set the user manually (for example, after successful login)
   setUser(user: User | null): void {
     this.userSubject.next(user);

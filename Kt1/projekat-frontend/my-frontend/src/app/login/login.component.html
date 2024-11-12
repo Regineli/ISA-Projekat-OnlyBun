@@ -25,9 +25,14 @@
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Log In</button>
     </form>
+    <div *ngIf="loginMessage" class="login-message">
+      {{ loginMessage }}
+    </div>
   </div>
   
   <div class="message-box" *ngIf="isActivated">
     <p>Account for {{activated_username}} activated successfully!</p>
     <button (click)="closeMessageBox()">Close</button>
   </div>
+
+  

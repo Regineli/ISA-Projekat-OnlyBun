@@ -19,6 +19,7 @@ export class LoginComponent {
   apiUrl: string = 'http://localhost:8080/api/users/login';
   isActivated = false;  // this is used when account is activated with email link
   activated_username: string = '';
+  loginMessage: string = '';
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {}
 
@@ -48,6 +49,10 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       (error) => {
+        console.log("Login message: ")
+      const firstKey = Object.keys(error.error)[0];
+      this.loginMessage = error.error.message;
+      console.log(this.loginMessage);
         console.error('Login failed', error);
         // Handle error (e.g., display error message to user)
       }
@@ -69,7 +74,7 @@ export class LoginComponent {
       this.activated_username = data.username;
       this.isActivated = true;
     })
-    .catch(error => {
+    .catch(error => {      
       console.error('Error activating account:', error);
       alert('Error activating account. Please try again later.');
     });

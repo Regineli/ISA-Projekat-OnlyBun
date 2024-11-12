@@ -15,6 +15,14 @@
     margin-bottom: 15px;
   }
   
+  .login-message {
+    color: red; /* or red for error */
+    font-weight: bold;
+    margin-top: 10px;
+    
+  }
+  
+
   label {
     display: block;
     font-weight: bold;
