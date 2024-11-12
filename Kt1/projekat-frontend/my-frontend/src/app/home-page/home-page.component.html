@@ -1,0 +1,43 @@
+<div class="top-bar">
+    <!-- Hide Register and Log In buttons if loggedUser exists -->
+    <button class="top-button" *ngIf="!loggedUser" (click)="navigateToRegister()">Register</button>
+    <button class="top-button" *ngIf="!loggedUser" (click)="navigateToLogin()">Log In</button>
+
+    <!-- Conditionally display logged-in user's username -->
+    <div *ngIf="loggedUser" (click)="toggleDropdown()">
+        <span class="logged-username">{{ loggedUser.username }}</span>
+    </div>
+
+    <div *ngIf="isDropdownOpen && loggedUser" class="dropdown-menu">
+        <button class="dropdown-item" (click)="viewUserDetails(loggedUser?.id ?? null)">User Details</button>
+        <button class="dropdown-item" (click)="logout()">Log Out</button>
+    </div>
+</div>
+
+
+
+
+  <div class="content">
+    <h1>Welcome to Bunny Posts</h1>
+    <div class="bunny-posts">
+      <div *ngFor="let bunny of bunnyPosts" class="bunny-post">
+        <h2>{{ bunny.details }}</h2>
+        <img [src]="bunny.photo" alt="Bunny Photo" class="bunny-image" />
+        <p>
+            <strong>User:</strong> 
+            <span (click)="viewUserDetails(bunny.user.id)">
+              {{ bunny.user.firstName }} {{ bunny.user.lastName }}
+            </span>
+        </p>
+        <p><strong>Email:</strong> {{ bunny.user.email }}</p>
+        
+        <!-- Buttons for Like, Comment, and View Comments -->
+        <div class="post-buttons">
+          <button class="post-button" (click)="likePost(bunny.id)" *ngIf="loggedUser">Like</button>
+          <button class="post-button" (click)="commentPost(bunny.id)" *ngIf="loggedUser">Comment</button>
+          <button class="post-button" (click)="viewComments(bunny.id)">View Comments</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
