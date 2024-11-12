@@ -36,6 +36,14 @@
           <button class="post-button" (click)="likePost(bunny.id)" *ngIf="loggedUser">Like</button>
           <button class="post-button" (click)="commentPost(bunny.id)" *ngIf="loggedUser">Comment</button>
           <button class="post-button" (click)="viewComments(bunny.id)">View Comments</button>
+
+          <div *ngIf="bunny.commentsVisible && bunny.comment.data.length > 0" class="comments-section">
+            <h4>Comments:</h4>
+            <div *ngFor="let comment of bunny.comment.data" class="comment">
+              <p><strong>User ID:</strong> {{ comment.userId }}</p>
+              <p>{{ comment.details }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -5,14 +5,25 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { UserService, User } from '../user.service'; // Import UserService
+import { HttpParams } from '@angular/common/http';
+
 
 
 // Define the structure of your BunnyPost based on your API response
+interface Comment {
+  id: number;
+  details: string;
+  bunnyPostId: number;
+  userId: number;
+}
+
 interface BunnyPost {
   id: number;
   details: string;
   photo: string;
   user: User;
+  commentsVisible: boolean;
+  comment: { data: Comment[] };
 }
 @Component({
   selector: 'app-home-page',
@@ -36,21 +47,12 @@ export class HomePageComponent implements OnInit{
 
 
 
-    bunnyPost: BunnyPost = {
-      id: 0,
-      details: '',
-      photo: '',
-      user: {
-        id: 0,
-        email: '',
-        firstName: '',
-        lastName: '',
-        username: '',  // Added username
-        password: '',  // Added password (if needed, you might consider excluding it from public interface)
-        address: '' 
-      },
-    };
-  
+
+
+    
+  private apiPostComments = 'http://localhost:8080/api/bunnyPosts/comments';
+  comments: Comment[] = [];
+
     bunnyPosts: BunnyPost[] = [];
     isDropdownOpen = false;
   
@@ -99,9 +101,31 @@ export class HomePageComponent implements OnInit{
     }
   
     // Function to view comments for a bunny post
-    viewComments(bunnyId: number) {
-      console.log(`Viewing comments for bunny post with ID: ${bunnyId}`);
-      // Add logic to display the comments for the selected post (e.g., navigate to a comments page)
+    viewComments(postId: number): void {
+      const post = this.bunnyPosts.find(p => p.id === postId);
+  
+      console.log("post", post)
+  
+      if (post) {
+        post.commentsVisible = !post.commentsVisible; // Toggle visibility
+  
+        if (!post.comment) {
+          post.comment = { data: [] };  // Initialize comment object if not already done
+        }
+  
+        if (post.commentsVisible && post.comment.data.length === 0) {
+          // Fetch comments if they haven't been loaded already
+          this.getCommentsByBunnyPostId(postId).subscribe(
+            (comments) => {
+              post.comment.data = comments; // Attach the comments to the post
+              console.log("post comments: ", post.comment.data)
+            },
+            (error) => {
+              console.error('Error fetching comments:', error);
+            }
+          );
+        }
+      }
     }
 
     viewUserDetails(userId: number | null): void {
@@ -118,5 +142,10 @@ export class HomePageComponent implements OnInit{
 
     logout(){
       this.userService.logout();
+    }
+
+    getCommentsByBunnyPostId(bunnyPostId: number): Observable<Comment[]> {
+      const params = new HttpParams().set('bunnyPostId', bunnyPostId.toString());
+      return this.http.get<Comment[]>(this.apiPostComments, { params });
     }
 }
