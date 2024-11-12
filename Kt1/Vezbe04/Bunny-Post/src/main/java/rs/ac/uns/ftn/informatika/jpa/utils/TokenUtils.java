@@ -1,10 +1,14 @@
 package rs.ac.uns.ftn.informatika.jpa.utils;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -55,18 +59,21 @@ public class TokenUtils {
 	 * @param username Korisničko ime korisnika kojem se token izdaje
 	 * @return JWT token
 	 */
-	public String generateToken(String username) {
-		return Jwts.builder()
-				.setIssuer(APP_NAME)
-				.setSubject(username)
-				.setAudience(generateAudience())
-				.setIssuedAt(new Date())
-				.setExpiration(generateExpirationDate())
-				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
-		
+	public String generateToken(User user) {
+	    return Jwts.builder()
+	            .setIssuer(APP_NAME)
+	            .setSubject(user.getUsername())
+	            .setAudience(generateAudience())
+	            .setIssuedAt(new Date())
+	            .setExpiration(generateExpirationDate())
+	            .claim("role", user.getRole())
+	            .signWith(SIGNATURE_ALGORITHM, SECRET)
+	            .compact();
+	}
+
 
 		// moguce je postavljanje proizvoljnih podataka u telo JWT tokena pozivom funkcije .claim("key", value), npr. .claim("role", user.getRole())
-	}
+	
 	
 	/**
 	 * Funkcija za utvrđivanje tipa uređaja za koji se JWT kreira.
@@ -140,6 +147,22 @@ public class TokenUtils {
 		
 		return username;
 	}
+	
+	public String getRoleFromToken(String token) {
+	    String role;
+	    try {
+	        final Claims claims = this.getAllClaimsFromToken(token);
+	        role = claims.get("role", String.class); // Očekujemo samo jednu ulogu
+	    } catch (ExpiredJwtException ex) {
+	        throw ex;
+	    } catch (Exception e) {
+	        role = null;
+	    }
+	    return role;
+	}
+
+
+
 
 	/**
 	 * Funkcija za preuzimanje datuma kreiranja tokena.

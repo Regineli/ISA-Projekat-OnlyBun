@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
+import java.util.List;
+
 import rs.ac.uns.ftn.informatika.jpa.model.Role;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
@@ -13,7 +15,7 @@ public class UserDTO {
     private String password; // Added field for password
     private String address;  // Added field for address
     private UserStatus status; // Added field for user status
-    private Role role;
+    private List<Role> roles;
 
     // Default constructor
     public UserDTO() {
@@ -22,11 +24,11 @@ public class UserDTO {
 
     // Constructor for mapping from User entity
     public UserDTO(User user) {
-        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getAddress(), user.getStatus());
+        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getAddress(), user.getStatus(), user.getRole());
     }
 
     // Constructor for initializing UserDTO
-    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status) {
+    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status, List<Role> roles) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -35,10 +37,18 @@ public class UserDTO {
         this.password = password;
         this.address = address;
         this.status = status; // Initialize the status
-        this.role=role;
+        this.roles=roles;
     }
 
-    // Getters and setters
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRole(Role role) {
+		this.roles = roles;
+	}
+
+	// Getters and setters
     public Integer getId() {
         return id;
     }

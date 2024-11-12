@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import rs.ac.uns.ftn.informatika.jpa.dto.JwtAuthenticationRequest;
 import rs.ac.uns.ftn.informatika.jpa.security.auth.RestAuthenticationEntryPoint;
 import rs.ac.uns.ftn.informatika.jpa.security.auth.TokenAuthenticationFilter;
 import rs.ac.uns.ftn.informatika.jpa.service.CustomUserDetailService;
@@ -46,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
             .and()
             .authorizeRequests()
-                .antMatchers("/api/users/**").permitAll() 
+                .antMatchers("/auth/login").permitAll()
                 .antMatchers("/h2-console/**").permitAll()  
                 .antMatchers("/api/foo").permitAll()      
                 .anyRequest().authenticated()

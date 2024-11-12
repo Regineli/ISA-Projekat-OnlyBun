@@ -20,7 +20,6 @@ public class Role implements GrantedAuthority {
     @Column(name="name")
     String name;
 
-    @JsonIgnore
     @Override
     public String getAuthority() {
         return name;

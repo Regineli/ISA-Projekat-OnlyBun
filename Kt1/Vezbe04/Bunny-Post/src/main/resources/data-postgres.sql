@@ -1,8 +1,8 @@
 INSERT INTO app_user (id, email, username, password, first_name, last_name, address, status) 
 VALUES 
-(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
-(2, 'sergej1@nesto.com', 'sergej1', 'password456', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE'),
-(3, 'sergej2@nesto.com', 'sergej2', 'password789', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE');
+(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
+(2, 'sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE'),
+(3, 'sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE');
 
 
 insert into bunnyPost (id, details, user_id, photo, time) values (1, 'post 1 test', 1, 'photo1', CURRENT_TIMESTAMP);
@@ -36,6 +36,6 @@ INSERT INTO ROLE (id, name) VALUES
 
 
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (1, 1); -- user-u dodeljujemo rolu USER
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 1); -- admin-u dodeljujemo rolu USER
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 2); -- user-u dodeljujemo rolu ADMIN
+INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 2); -- admin-u dodeljujemo rolu USER
+INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 2); -- user-u dodeljujemo rolu ADMIN
 

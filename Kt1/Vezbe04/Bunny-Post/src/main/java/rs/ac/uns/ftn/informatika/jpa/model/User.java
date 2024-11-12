@@ -24,12 +24,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.management.relation.RoleList;
 import javax.persistence.*;
 
 /*
@@ -156,7 +158,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
     
-    public List<Role> getRoles() {
+    public List<Role> getRole() {
        return roles;
     }
 
@@ -334,7 +336,7 @@ public class User implements UserDetails {
 		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", lastName=" + lastName + ", password=" + password + ", status=" + status + "]";
 	}
 	
-	@JsonIgnore
+	
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;

@@ -22,6 +22,7 @@ public class CustomUserDetailService implements UserDetailsService{
 		User user = null;
 		try {
 			user = userRepository.findByUsername(username);
+			System.out.println("User found: " + user.getUsername()+ user.getPassword()); // Logovanje korisničkog imena
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

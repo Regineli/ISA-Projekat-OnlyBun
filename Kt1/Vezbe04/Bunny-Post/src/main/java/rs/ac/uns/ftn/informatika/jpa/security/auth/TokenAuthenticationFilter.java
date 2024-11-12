@@ -39,7 +39,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-
+		 if (request.getRequestURI().equals("/auth/login")) {
+		        chain.doFilter(request, response);  
+		        return;
+		    }
+		 
 		String username;
 		
 		// 1. Preuzimanje JWT tokena iz zahteva
@@ -54,6 +58,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 				
 				if (username != null) {
 					
+					
 					// 3. Preuzimanje korisnika na osnovu username-a
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					// 4. Provera da li je prosledjeni token validan
@@ -63,6 +68,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 						TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
 						authentication.setToken(authToken);
 						SecurityContextHolder.getContext().setAuthentication(authentication);
+						LOGGER.info("Korisnik sa ulogom: " + authentication.getAuthorities());
 					}
 				}
 			}

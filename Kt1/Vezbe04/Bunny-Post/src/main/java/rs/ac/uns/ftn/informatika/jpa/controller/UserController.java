@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,7 +63,6 @@ public class UserController {
         this.validator = validator;
     }
 	
-
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
 
@@ -241,6 +241,7 @@ public class UserController {
 		return new ResponseEntity<>(UsersDTO, HttpStatus.OK);
 	}
 	
+	/*
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> logIn(@RequestParam String email, @RequestParam String password) {
 	    // Try to find the user by email
@@ -265,7 +266,8 @@ public class UserController {
 	    // If user is found and password matches, return the user data
 	    UserDTO userDTO = new UserDTO(user);
 	    return new ResponseEntity<>(userDTO, HttpStatus.OK); // Return user details with OK status
-	}
+	}*/
+	
 	
 	@GetMapping("/bunnyPosts")
 	public ResponseEntity<List<BunnyPostDTO>> getBunnyPostsByUserId(@RequestParam Integer userID) {
