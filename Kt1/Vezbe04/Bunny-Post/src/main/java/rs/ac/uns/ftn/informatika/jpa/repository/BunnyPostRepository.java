@@ -11,6 +11,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.Course;
 
 public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
 	List<BunnyPost> findByUserId(Integer userId);
+	BunnyPost findByPhoto(String photo);
 	
 	/*
 	@Query("SELECT c FROM Comment c WHERE c.bunnyPost.id = ?1")
@@ -26,4 +27,5 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
 	
 	@Query("SELECT MAX(b.id) FROM BunnyPost b")
     Integer findMaxId();
+	
 }

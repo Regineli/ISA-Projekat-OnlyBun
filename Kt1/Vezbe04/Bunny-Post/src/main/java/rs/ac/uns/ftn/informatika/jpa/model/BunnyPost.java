@@ -16,7 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.tools.DocumentationTool.Location;
+import rs.ac.uns.ftn.informatika.jpa.model.Location;
+
 
 /*
  * @Entity anotacija naznacava da je klasa perzistentni entitet. Klasa ima konstruktor bez parametara.
@@ -85,6 +86,9 @@ public class BunnyPost {
 	@OneToMany(mappedBy = "bunnyPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
 	
+	@ManyToOne
+    @JoinColumn(name = "location_id") 
+    private Location location;
 
 	
 
@@ -121,11 +125,10 @@ public class BunnyPost {
 		super();
 	}
 
-	public BunnyPost(Integer id, String details, String photo) {
+	public BunnyPost(String details, User user) {
 		super();
-		this.id = id;
 		this.details = details;
-		this.photo = photo;
+		this.user=user;
 	}
 
 	public Integer getId() {
@@ -164,6 +167,13 @@ public class BunnyPost {
 		this.time = time;
 	}
 	
+	public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 	
 	
 	/*
