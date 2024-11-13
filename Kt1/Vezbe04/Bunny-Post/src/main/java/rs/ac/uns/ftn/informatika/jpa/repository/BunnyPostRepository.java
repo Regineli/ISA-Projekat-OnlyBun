@@ -13,6 +13,12 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
 	List<BunnyPost> findByUserId(Integer userId);
 	BunnyPost findByPhoto(String photo);
 	
+    @Query("SELECT u FROM BunnyPost u JOIN FETCH u.comments WHERE u.id = ?1")
+    BunnyPost findOneWithComments(Integer bunnyPostID);
+
+    @Query("SELECT b FROM BunnyPost b LEFT JOIN FETCH b.likedByUsers WHERE b.id = ?1")
+    BunnyPost findOneWithLikes(Integer bunnyPostID);
+
 	/*
 	@Query("SELECT c FROM Comment c WHERE c.bunnyPost.id = ?1")
 	List<Comment> findCommentsByBunnyPostId(Integer bunnyPostId);
@@ -21,9 +27,6 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
     @Query("SELECT c FROM Comment c WHERE c.bunnyPostId = ?1 AND c.userId = ?2")
     List<Comment> findByBunnyPostIdAndUserId(Integer bunnyPostId, Integer userId);
     */
-	
-	@Query("select u from BunnyPost u join fetch u.comments c where u.id =?1")
-	public Course findOneWithComments(Integer bunnyPostID);
 	
 	@Query("SELECT MAX(b.id) FROM BunnyPost b")
     Integer findMaxId();

@@ -12,12 +12,18 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.2.0",
+<<<<<<< HEAD
     "@angular/cdk": "^18.2.12",
+=======
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.0",
     "@angular/forms": "^18.2.0",
+<<<<<<< HEAD
     "@angular/material": "^18.2.12",
+=======
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/platform-server": "^18.2.0",
@@ -43,4 +49,8 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e

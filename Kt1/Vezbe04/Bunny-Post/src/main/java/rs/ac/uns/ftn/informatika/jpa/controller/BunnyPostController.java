@@ -23,11 +23,15 @@ import rs.ac.uns.ftn.informatika.jpa.dto.BunnyPostDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.ExamDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.StudentDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.UserDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 import rs.ac.uns.ftn.informatika.jpa.model.Exam;
+import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.CommentService;
+import rs.ac.uns.ftn.informatika.jpa.service.UserService;
+
 
 @RestController
 @RequestMapping(value = "api/bunnyPosts")
@@ -39,6 +43,9 @@ public class BunnyPostController {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+    private UserService userService;
 
 	@GetMapping
 	public ResponseEntity<List<BunnyPostDTO>> getBunnyPosts() {
@@ -133,4 +140,71 @@ public class BunnyPostController {
 	    return new ResponseEntity<>(nextId, HttpStatus.OK);
 	}
 
+
+    // Add a comment to a post
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<CommentDTO> addCommentToPost(@PathVariable Integer postId, @RequestBody CommentDTO commentDTO) {
+        BunnyPost bunnyPost = bunnyPostService.findOne(postId);
+        if (bunnyPost == null || bunnyPost.isDeleted()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Find the user who is making the comment and associate it with the comment
+        User user = userService.findOne(commentDTO.getUserId());
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Comment newComment = new Comment();
+        newComment.setDetails(commentDTO.getDetails());
+        newComment.setBunnyPost(bunnyPost);
+        newComment.setUser(user);
+        newComment = commentService.save(newComment);
+
+        return new ResponseEntity<>(new CommentDTO(newComment), HttpStatus.CREATED);
+    }
+
+    // Like a post
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<Void> likePost(@PathVariable Integer postId, @RequestParam Integer userId) {
+        BunnyPost bunnyPost = bunnyPostService.findOne(postId);
+        User user = userService.findOne(userId);
+
+        if (bunnyPost == null || user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        bunnyPostService.likePost(postId, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Unlike a post
+    @PostMapping("/{postId}/unlike")
+    public ResponseEntity<Void> unlikePost(@PathVariable Integer postId, @RequestParam Integer userId) {
+        BunnyPost bunnyPost = bunnyPostService.findOne(postId);
+        User user = userService.findOne(userId);
+
+        if (bunnyPost == null || user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        bunnyPostService.unlikePost(postId, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // Get users who liked a post
+    @GetMapping("/{postId}/likes")
+    public ResponseEntity<List<UserDTO>> getLikesForPost(@PathVariable Integer postId) {
+        BunnyPost bunnyPost = bunnyPostService.findOneWithLikes(postId);
+
+        if (bunnyPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<UserDTO> likedUsers = bunnyPost.getLikedByUsers().stream()
+                                             .map(UserDTO::new)
+                                             .collect(Collectors.toList());
+
+        return new ResponseEntity<>(likedUsers, HttpStatus.OK);
+    }
 }

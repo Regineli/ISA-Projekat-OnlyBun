@@ -242,6 +242,8 @@ public class UserController {
 	}
 	
 	/*
+=======
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> logIn(@RequestParam String email, @RequestParam String password) {
 	    // Try to find the user by email
@@ -266,8 +268,11 @@ public class UserController {
 	    // If user is found and password matches, return the user data
 	    UserDTO userDTO = new UserDTO(user);
 	    return new ResponseEntity<>(userDTO, HttpStatus.OK); // Return user details with OK status
+<<<<<<< HEAD
 	}*/
 	
+	
+
 	
 	@GetMapping("/bunnyPosts")
 	public ResponseEntity<List<BunnyPostDTO>> getBunnyPostsByUserId(@RequestParam Integer userID) {

@@ -35,12 +35,30 @@ import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.Location;
 import rs.ac.uns.ftn.informatika.jpa.service.LocationService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import rs.ac.uns.ftn.informatika.jpa.dto.CommentDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
+import rs.ac.uns.ftn.informatika.jpa.model.Comment;
+import rs.ac.uns.ftn.informatika.jpa.model.User;
+import rs.ac.uns.ftn.informatika.jpa.repository.BunnyPostRepository;
+import rs.ac.uns.ftn.informatika.jpa.repository.UserRepository;
 
 @Service
 public class BunnyPostService {
 
 	@Autowired
 	private BunnyPostRepository bunnyPostRepository;
+
+	@Autowired
+    private UserRepository userRepository;
 	
 	@Autowired
     private LocationService locationService;
@@ -231,4 +249,48 @@ public class BunnyPostService {
 
 */
 	
+
+    // Soft delete umesto fizičkog brisanja
+    public void softDelete(Integer id) {
+        BunnyPost bunnyPost = findOne(id);
+        if (bunnyPost != null) {
+            bunnyPost.setDeleted(true);
+            bunnyPostRepository.save(bunnyPost);
+        }
+    }
+
+
+    // Dodaj lajk korisnika na post
+    @Transactional // Dodato za održavanje sesije prilikom rada sa lajkovima
+    public void likePost(Integer postId, Integer userId) {
+        BunnyPost bunnyPost = findOneWithLikes(postId);
+        Optional<User> user = userRepository.findById(userId);
+
+        if (bunnyPost != null && user.isPresent()) {
+            if (!bunnyPost.getLikedByUsers().contains(user.get())) {
+                bunnyPost.addLike(user.get());
+                bunnyPostRepository.save(bunnyPost);
+            }
+        }
+    }
+
+    // Ukloni lajk korisnika sa posta
+    @Transactional // Dodato za održavanje sesije prilikom rada sa lajkovima
+    public void unlikePost(Integer postId, Integer userId) {
+        BunnyPost bunnyPost = findOneWithLikes(postId);
+        Optional<User> user = userRepository.findById(userId);
+
+        if (bunnyPost != null && user.isPresent()) {
+            if (bunnyPost.getLikedByUsers().contains(user.get())) {
+                bunnyPost.removeLike(user.get());
+                bunnyPostRepository.save(bunnyPost);
+            }
+        }
+    }
+
+    // Pronađi post sa lajkovima kako bi se izbegla LazyInitializationException
+    @Transactional
+    public BunnyPost findOneWithLikes(Integer postId) {
+        return bunnyPostRepository.findOneWithLikes(postId);
+    }
 }

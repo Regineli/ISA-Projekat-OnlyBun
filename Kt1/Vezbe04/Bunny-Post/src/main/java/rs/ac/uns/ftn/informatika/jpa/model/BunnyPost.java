@@ -42,6 +42,11 @@ import rs.ac.uns.ftn.informatika.jpa.model.Location;
  * - Unidirekcione/bidirekcione @ManyToMany sa Set kolekcijom su efikasne
  * - Unidirekcione/bidirekcione @ManyToMany sa List kolekcijom su prilično neefikasne
  */
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import javax.persistence.*;
+
 @Entity
 @Table(name = "bunnypost")
 public class BunnyPost {
@@ -90,7 +95,19 @@ public class BunnyPost {
     @JoinColumn(name = "location_id") 
     private Location location;
 
-	
+	@Column(name = "likes_count", nullable = false)
+    private int likesCount = 0;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
+    @ManyToMany
+    @JoinTable(
+        name = "post_likes",
+        joinColumns = @JoinColumn(name = "bunny_post_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> likedByUsers = new HashSet<>();
 
 	
 	
@@ -130,6 +147,14 @@ public class BunnyPost {
 		this.details = details;
 		this.user=user;
 	}
+	
+
+
+    public BunnyPost(Integer id, String details, String photo) {
+        this.id = id;
+        this.details = details;
+        this.photo = photo;
+    }
 
 	public Integer getId() {
 		return id;
@@ -228,16 +253,6 @@ public class BunnyPost {
 		return Objects.equals(details, s.details);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(details);
-	}
-
-	@Override
-	public String toString() {
-		return "BunnyPost [id=" + id + ", details=" + details + ", user=" + user.getFirstName() + ", photo=" + photo + "]";
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -245,4 +260,54 @@ public class BunnyPost {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public void incrementLikes() {
+        this.likesCount++;
+    }
+
+    public void decrementLikes() {
+        if (this.likesCount > 0) {
+            this.likesCount--;
+        }
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Set<User> getLikedByUsers() {
+        return likedByUsers;
+    }
+
+    public void addLike(User user) {
+        likedByUsers.add(user);
+        incrementLikes();
+    }
+
+    public void removeLike(User user) {
+        likedByUsers.remove(user);
+        decrementLikes();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(details);
+    }
+
+    @Override
+    public String toString() {
+        return "BunnyPost [id=" + id + ", details=" + details + ", user=" + user.getFirstName() + ", photo=" + photo + "]";
+    }
 }

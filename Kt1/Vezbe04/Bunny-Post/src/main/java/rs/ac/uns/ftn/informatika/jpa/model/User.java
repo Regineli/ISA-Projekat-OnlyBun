@@ -205,12 +205,14 @@ public class User implements UserDetails {
 	 */
 	//@OneToMany(mappedBy = "User", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//private Set<Exam> exams = new HashSet<Exam>();
-
-	public User() {
-		super();
+    public User() {
+		
 	}
 
-	public User(Integer id, String email, String username, String password, String firstName, String lastName, String address, UserStatus status, List<Role> roles) {
+	public User(Integer id, String email, String username, String password, String firstName, String lastName, String address, UserStatus status, List<Role> roles) {		
+	}
+	
+	public User(Integer id, String email, String username, String password, String firstName, String lastName, String address, UserStatus status) {
 	    super();
 	    this.id = id;
 	    this.email = email;
@@ -221,7 +223,7 @@ public class User implements UserDetails {
 	    this.address = address;
 	    this.status = status;
 	    this.roles=roles;
-
+	    this.status = status;  
 	}
 
 	public Integer getId() {

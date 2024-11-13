@@ -24,11 +24,13 @@ public class UserDTO {
 
     // Constructor for mapping from User entity
     public UserDTO(User user) {
-        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getAddress(), user.getStatus(), user.getRole());
+        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getAddress(), user.getStatus());
     }
 
+    
+
     // Constructor for initializing UserDTO
-    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status, List<Role> roles) {
+    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -48,7 +50,7 @@ public class UserDTO {
 		this.roles = roles;
 	}
 
-	// Getters and setters
+    
     public Integer getId() {
         return id;
     }
@@ -112,5 +114,4 @@ public class UserDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
-   
 }

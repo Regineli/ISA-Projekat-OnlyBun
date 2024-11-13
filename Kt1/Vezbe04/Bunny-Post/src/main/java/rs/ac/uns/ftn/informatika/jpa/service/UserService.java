@@ -23,6 +23,7 @@ public class UserService {
 	@Autowired
     private EmailService emailService;
 	
+	
 	public User findOne(Integer id) {
 		return UserRepository.findById(id).orElseGet(null);
 	}

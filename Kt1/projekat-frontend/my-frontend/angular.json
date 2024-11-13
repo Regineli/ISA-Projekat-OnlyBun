@@ -21,10 +21,19 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+<<<<<<< HEAD
               "src/assets" 
             ],
             "styles": [
               "src/custom-theme.scss",
+=======
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
               "src/styles.css"
             ],
             "scripts": [],
@@ -82,7 +91,14 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+<<<<<<< HEAD
               "src/assets" 
+=======
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
             ],
             "styles": [
               "src/styles.css"
@@ -94,6 +110,10 @@
     }
   },
   "cli": {
+<<<<<<< HEAD
     "analytics": "6079d977-f4bd-4736-b1dd-79882989c56f"
+=======
+    "analytics": false
+>>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
   }
 }
