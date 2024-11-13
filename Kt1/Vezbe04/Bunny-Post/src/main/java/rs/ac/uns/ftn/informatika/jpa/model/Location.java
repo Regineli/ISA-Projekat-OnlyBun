@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class Location {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

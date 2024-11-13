@@ -12,12 +12,8 @@ interface User {
   lastName: string;
 }
 
-// Define the structure of your BunnyPost based on your API response
-<<<<<<< HEAD
+
 export interface BunnyPost {
-=======
-interface BunnyPost {
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
   id: number;
   details: string;
   photo: string;
@@ -64,8 +60,4 @@ export class BunnyPostComponent {
       }
     );
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
 }

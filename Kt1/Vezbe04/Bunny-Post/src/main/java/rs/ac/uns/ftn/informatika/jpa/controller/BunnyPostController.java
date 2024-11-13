@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.tools.DocumentationTool.Location;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -206,5 +208,23 @@ public class BunnyPostController {
                                              .collect(Collectors.toList());
 
         return new ResponseEntity<>(likedUsers, HttpStatus.OK);
+    }
+    
+    @PostMapping("/add")
+    public ResponseEntity<BunnyPost> addNewPost(
+    		@RequestParam String email,
+	        @RequestParam String details,
+	        @RequestParam String photo,
+	        @RequestParam double longitude,
+	        @RequestParam double latitude){  
+        BunnyPost newPost = bunnyPostService.addNewPost(
+        		userService.findByEmail(email),
+                details,
+                photo,
+                longitude,
+                latitude
+        );
+
+        return ResponseEntity.ok(newPost); 
     }
 }

@@ -91,7 +91,7 @@ public class BunnyPost {
 	@OneToMany(mappedBy = "bunnyPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<>();
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "location_id") 
     private Location location;
 

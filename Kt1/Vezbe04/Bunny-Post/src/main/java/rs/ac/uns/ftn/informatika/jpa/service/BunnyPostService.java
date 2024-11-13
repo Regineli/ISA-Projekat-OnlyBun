@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,7 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.PathItem;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import rs.ac.uns.ftn.informatika.jpa.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.repository.BunnyPostRepository;
@@ -106,20 +108,24 @@ public class BunnyPostService {
         return (maxId != null) ? maxId + 1 : 1;
     }
 	
-	public BunnyPost addNewPost(User user, String details, String base64Photo, double latitude, double longitude) {
+	public BunnyPost addNewPost(User user, String details, String base64Photo, double longitude, double latitude) {
 	    BunnyPost newPost = new BunnyPost(details, user); // Postavi `photo` privremeno kao prazan string
 	    
 	    newPost.setTime(LocalDateTime.now());
 	    newPost.setId(findNextId());
 
 	    // Set location
+	    
 	    Location location = new Location();
+	    
 	    location.setLatitude(latitude);
 	    location.setLongitude(longitude);
 	    newPost.setLocation(location);
+	    newPost.setDeleted(false);
+	    
 
 	    try {
-	        String directoryPath = "src/main/webapp/images";
+	        String directoryPath = "src/main/webapp/images/";
 	        String fileName = "photo_" + newPost.getId() + ".jpg"; 
 	        String filePath = directoryPath + fileName;
 
@@ -127,6 +133,12 @@ public class BunnyPostService {
 	        if (!directory.exists()) {
 	            directory.mkdirs();
 	        }
+	        if (base64Photo.startsWith("data:image/png;base64,")) {
+                base64Photo = base64Photo.replace("data:image/png;base64,", "");
+            }
+	        
+	        base64Photo = base64Photo.replaceAll("\\s", ""); // Uklanja razmake
+
 
 	        byte[] imageBytes = Base64.getDecoder().decode(base64Photo);
 	        try (FileOutputStream fos = new FileOutputStream(filePath)) {
@@ -162,13 +174,13 @@ public class BunnyPostService {
         }
         return bunnyPost;
     }
-	/*
+	
 	@Scheduled(cron = "0 0 0 * * ?") 
 	public void compressOldImages() {
 	    LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
-	    Path start = Paths.get("src/main/webapp/images");
+	    Path start = Paths.get("src/main/webapp/images/");
 	    
-	    try (Stream<Path> paths = Files.walk(Paths.get(start))) {
+	    try (Stream<Path> paths = Files.walk(start)) {
 	        paths.filter(Files::isRegularFile)
 	             .filter(path -> isOlderThanOneMonth(path, oneMonthAgo)) 
 	             .filter(path -> !path.getFileName().toString().startsWith("compressed_"))
@@ -187,15 +199,21 @@ public class BunnyPostService {
     }
 
     private void compressImage(Path imagePath) {
+    	System.out.print("aaaaaaaaaaaaaaaaaa");
         File inputFile = imagePath.toFile();
         
         // Definišite putanju za kompresovanu sliku sa prefiksom 'compressed_'
         String compressedFileName = "compressed_" + inputFile.getName();
         File compressedFile = new File("src/main/webapp/images/" + compressedFileName);
-
+        System.out.print("napravljen compresfile");
         try {
             // Učitajte originalnu sliku
             BufferedImage image = ImageIO.read(inputFile);
+            if (image.getType() != BufferedImage.TYPE_INT_RGB) {
+                BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+                rgbImage.createGraphics().drawImage(image, 0, 0, null);
+                image = rgbImage;
+            }
             Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
             
             if (!writers.hasNext()) {
@@ -204,6 +222,7 @@ public class BunnyPostService {
             ImageWriter writer = writers.next();
 
             // Kompresujte sliku
+            
             try (ImageOutputStream output = ImageIO.createImageOutputStream(compressedFile)) {
                 writer.setOutput(output);
 
@@ -214,6 +233,8 @@ public class BunnyPostService {
                 }
 
                 writer.write(null, new javax.imageio.IIOImage(image, null, null), param);
+
+                System.out.print("kompresovanje");
             }
             writer.dispose();
 
@@ -247,7 +268,7 @@ public class BunnyPostService {
         }
     }
 
-*/
+
 	
 
     // Soft delete umesto fizičkog brisanja

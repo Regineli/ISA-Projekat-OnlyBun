@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { UserService, User } from '../user.service'; // Import UserService
+import { BunnyPostFormComponent } from '../bunny-post-form/bunny-post-form.component';
 
 
 // Define the structure of your BunnyPost based on your API response
@@ -17,13 +18,14 @@ interface BunnyPost {
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterOutlet, BunnyPostFormComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit{
   constructor(private http: HttpClient, private router: Router, private userService: UserService) {}
     loggedUser: User | null = null;
+    isFormVisible: boolean=false;
 
 
   ngOnInit(): void { 
@@ -118,5 +120,10 @@ export class HomePageComponent implements OnInit{
 
     logout(){
       this.userService.logout();
+    }
+
+    addPost(){
+      console.log(this.isFormVisible);
+      this.isFormVisible=this.isFormVisible = !this.isFormVisible;;
     }
 }

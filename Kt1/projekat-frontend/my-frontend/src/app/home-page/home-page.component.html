@@ -3,28 +3,28 @@
     <button class="top-button" *ngIf="!loggedUser" (click)="navigateToRegister()">Register</button>
     <button class="top-button" *ngIf="!loggedUser" (click)="navigateToLogin()">Log In</button>
 
+      
+
     <!-- Conditionally display logged-in user's username -->
-<<<<<<< HEAD
-     <div class="user">
-      <img src="assets\images\user.png" alt="user">
-     </div>
-=======
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
-    <div *ngIf="loggedUser" (click)="toggleDropdown()">
-        <span class="logged-username">{{ loggedUser.username }}</span>
-    </div>
 
-    <div *ngIf="isDropdownOpen && loggedUser" class="dropdown-menu">
-<<<<<<< HEAD
-        <button class="dropdown-item" (click)="viewUserDetails(loggedUser.id)">User Details</button>
-=======
-        <button class="dropdown-item" (click)="viewUserDetails(loggedUser?.id ?? null)">User Details</button>
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
-        <button class="dropdown-item" (click)="logout()">Log Out</button>
-    </div>
+    <div class="user" *ngIf="loggedUser" (click)="toggleDropdown()">
+      <button  *ngIf="loggedUser" (click)="logout()">Log Out</button>
+      <button class="dropdown-item">
+        <img src="assets\images\location.png" alt="user">
+      </button>
+      <button class="dropdown-item">
+        <img src="assets\images\trend.png" alt="user">
+      </button>
+      <button class="dropdown-item">
+        <img src="assets\images\message.png" alt="user">
+      </button>
+      <button class="dropdown-item" (click)="viewUserDetails(loggedUser.id)">
+        <img src="assets\images\user.png" alt="user">
+      </button>
+      
+    </div> 
+     
 </div>
-
-
 
 
   <div class="content">

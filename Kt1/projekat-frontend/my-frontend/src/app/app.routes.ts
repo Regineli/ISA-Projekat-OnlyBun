@@ -5,6 +5,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import { UserProfileInfoComponent } from './user-profile-info/user-profile-info.component';
 import { RegisterComponent } from './register/register.component';
+import { BunnyPostFormComponent } from './bunny-post-form/bunny-post-form.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,5 +14,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'user_profile_info/:userId', component: UserProfileInfoComponent },
     { path: 'register', component: RegisterComponent},
-    { path: 'register-activation/:userId', component: LoginComponent }
+    { path: 'register-activation/:userId', component: LoginComponent },
+    { path: 'bunny-form', component: BunnyPostFormComponent}
 ];

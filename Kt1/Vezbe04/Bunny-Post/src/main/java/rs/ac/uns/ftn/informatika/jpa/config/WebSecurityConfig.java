@@ -15,6 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import rs.ac.uns.ftn.informatika.jpa.dto.JwtAuthenticationRequest;
 import rs.ac.uns.ftn.informatika.jpa.security.auth.RestAuthenticationEntryPoint;
@@ -58,6 +63,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Dodajte filter za autentifikaciju pre BasicAuthenticationFilter, ali obavezite samo za rute koje nisu javne
         http.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, customUserDetailService), BasicAuthenticationFilter.class);
+    }
+    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:4200");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     

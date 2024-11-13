@@ -23,6 +23,8 @@ public class LocationService {
 	}
 	
 	public Location save(Location location) {
+		System.out.print("loc servis");
+		System.out.print(location.getId());
 		return locationRepository.save(location);
 	}
 

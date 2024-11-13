@@ -6,6 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 50px;
   }
   
   .top-button {
@@ -122,7 +123,6 @@
   }
   
 
-  /* src/app/home/home.component.css */
 
 .header {
     display: flex;
@@ -141,18 +141,20 @@
     margin-left: 10px;
     font-weight: bold;
   }
-<<<<<<< HEAD
-  
   .user {
     position: absolute;
-    top: 10px; /* Pomerite sliku malo od gornjeg ruba */
-    right: 10px; /* Pomerite sliku malo od desnog ruba */
+    top: 10px;
+    right: 10px;
+    display: flex;         /* Koristi flex za centriranje */
+    align-items: center;   /* Vertikalno centriranje */
+    gap: 5px;              /* Razmak između elemenata */
   }
   
   .user img {
     width: 50px;
-    height: 50px; 
+    height: 50px;
   }
-=======
-  
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
+
+  .dropdown-item{
+    background-color: transparent;
+  }

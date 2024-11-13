@@ -65,6 +65,7 @@ public class UserController {
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
+		System.out.println("Hello, World!");
 
 		List<User> Users = UserService.findAll();
 
@@ -241,9 +242,7 @@ public class UserController {
 		return new ResponseEntity<>(UsersDTO, HttpStatus.OK);
 	}
 	
-	/*
-=======
->>>>>>> d1075a4ed9b306fbffe54a9339eef175b841af5e
+	
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> logIn(@RequestParam String email, @RequestParam String password) {
 	    // Try to find the user by email
@@ -268,8 +267,7 @@ public class UserController {
 	    // If user is found and password matches, return the user data
 	    UserDTO userDTO = new UserDTO(user);
 	    return new ResponseEntity<>(userDTO, HttpStatus.OK); // Return user details with OK status
-<<<<<<< HEAD
-	}*/
+	}
 	
 	
 
