@@ -14,12 +14,22 @@ export interface User {
     roles: any[] | null;
   }
   
+  export interface Comment {
+    id: number;
+    details: string;
+    bunnyPostId: number; // ID of the BunnyPost this comment is related to
+    userId: number; // ID of the user who commented
+    user: User; // The user object of the commenter
+}
+
 export interface BunnyPost {
     id: number;
     details: string;
     photo: string;
     time: Date;
     user: User;
+    comments: Comment[];
+    showComments?: boolean;
 }
 
 @Injectable()

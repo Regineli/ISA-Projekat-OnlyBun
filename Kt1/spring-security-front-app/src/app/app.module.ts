@@ -23,7 +23,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { BunnyPostService } from './service/bunnyPost.service';
-import { CommentService } from './service/comment.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +53,6 @@ import { CommentService } from './service/comment.service';
     UserService,
     ConfigService,
     BunnyPostService,
-    CommentService,
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
