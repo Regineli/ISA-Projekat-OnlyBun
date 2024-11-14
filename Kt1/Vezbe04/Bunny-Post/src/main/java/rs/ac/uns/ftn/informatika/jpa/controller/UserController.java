@@ -63,6 +63,7 @@ public class UserController {
         this.validator = validator;
     }
 	
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<UserDTO>> getAllUsers() {
 		System.out.println("Hello, World!");

@@ -2,8 +2,8 @@
 -- Inserting users
 INSERT INTO app_user (id, email, username, password, first_name, last_name, address, status) 
 VALUES 
---(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
-(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
+(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
+--(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
 (2, 'sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE'),
 (3, 'sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE');
 

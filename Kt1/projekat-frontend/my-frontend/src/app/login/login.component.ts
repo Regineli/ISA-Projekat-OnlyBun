@@ -16,7 +16,7 @@ import { UserService } from '../user.service'; // Import UserService
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  apiUrl: string = 'http://localhost:8080/api/users/login';
+  apiUrl: string = 'http://localhost:8080/auth/login';
   isActivated = false;  // this is used when account is activated with email link
   activated_username: string = '';
 
