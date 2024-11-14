@@ -88,7 +88,12 @@ public class BunnyPost {
 	private LocalDateTime time;	
 	
 	
-	@OneToMany(mappedBy = "bunnyPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "bunny_post_comments",
+        joinColumns = @JoinColumn(name = "bunny_post_id"),
+        inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
 	private Set<Comment> comments = new HashSet<>();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)

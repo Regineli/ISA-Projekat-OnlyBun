@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FooService} from '../service/foo.service';
 import {UserService} from '../service/user.service';
 import {ConfigService} from '../service/config.service';
+import { BunnyPost, BunnyPostService } from '../service/bunnyPost.service';
 
 @Component({
   selector: 'app-home',
@@ -10,30 +11,27 @@ import {ConfigService} from '../service/config.service';
 })
 export class HomeComponent implements OnInit {
 
-  fooResponse = {};
+  bunnyPosts: BunnyPost[] = [];
   whoamIResponse = {};
   allUserResponse = {};
+  currentUser!:any;
 
   constructor(
     private config: ConfigService,
-    private fooService: FooService,
+    private bunnyPostService: BunnyPostService,
     private userService: UserService
   ) {
   }
 
   ngOnInit() {
+    this.loadBunnyPosts();
+    this.currentUser = this.userService.currentUser;
+    console.log("current user home: ", this.currentUser);
   }
-
+/*
   makeRequest(path:any) {
     console.log("home component path: ", path);
-    if (this.config.bunny_post_url.endsWith(path)) {
-      this.fooService.getFoo()
-        .subscribe(res => {
-          this.forgeResonseObj(this.fooResponse, res, path);
-        }, err => {
-          this.forgeResonseObj(this.fooResponse, err, path);
-        });
-    } else if (this.config.whoami_url.endsWith(path)) {
+    if (this.config.whoami_url.endsWith(path)) {
       this.userService.getMyInfo()
         .subscribe(res => {
           this.forgeResonseObj(this.whoamIResponse, res, path);
@@ -48,7 +46,7 @@ export class HomeComponent implements OnInit {
           this.forgeResonseObj(this.allUserResponse, err, path);
         });
     }
-  }
+  } */
 
   forgeResonseObj(obj:any, res:any, path:any) {
     obj['path'] = path;
@@ -67,6 +65,40 @@ export class HomeComponent implements OnInit {
       obj['status'] = 200;
       obj['body'] = JSON.stringify(res, null, 2);
     }
+  }
+
+  loadBunnyPosts() {
+    const path = '/api/bunnyPosts';
+    this.bunnyPostService.getBunnyPosts()
+        .subscribe(res => {
+          this.bunnyPosts = res;
+          console.log("bunny post get res: ", res);
+          console.log("bunny post get: ", this.bunnyPosts);
+        }, err => {
+          //this.forgeResonseObj(this.bunnyPosts, err, path);
+          console.log("error getting bunny posts");
+        });
+  }
+
+  likePost(bunnyId: number) {
+    console.log(`Liked bunny post with ID: ${bunnyId}`);
+    // Add logic for liking a post (e.g., update the backend or frontend state)
+  }
+
+  // Function to comment on a bunny post
+  commentPost(bunnyId: number) {
+    console.log(`Commented on bunny post with ID: ${bunnyId}`);
+    // Add logic for commenting on a post (e.g., open comment modal or page)
+  }
+
+  // Function to view comments for a bunny post
+  viewComments(bunnyId: number) {
+    console.log(`Viewing comments for bunny post with ID: ${bunnyId}`);
+    // Add logic to display the comments for the selected post (e.g., navigate to a comments page)
+  }
+
+  hasSignedIn() {
+    return !!this.userService.currentUser;
   }
 
 }

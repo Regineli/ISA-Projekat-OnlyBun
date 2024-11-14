@@ -10,6 +10,7 @@ public class CommentDTO {
     private String details;
     private Integer bunnyPostId;
     private Integer userId;
+    private UserDTO user;
 
     public CommentDTO() {
     }
@@ -27,6 +28,11 @@ public class CommentDTO {
         this.details = comment.getDetails();
         this.bunnyPostId = comment.getBunnyPost().getId(); // Assuming BunnyPost has an getId() method
         this.userId = comment.getUser().getId();           // Assuming User has an getId() method
+        
+        if (comment.getUser() != null) {
+            this.user = new UserDTO(comment.getUser());
+            System.out.println("comment user " + this.userId.toString());
+        }
     }
 
     // Getters and setters

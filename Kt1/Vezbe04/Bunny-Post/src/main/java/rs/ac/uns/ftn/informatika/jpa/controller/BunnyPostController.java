@@ -62,9 +62,10 @@ public class BunnyPostController {
 	    // Convert sorted BunnyPosts to DTOs
 	    List<BunnyPostDTO> bunnyPostsDTO = new ArrayList<>();
 	    for (BunnyPost post : bunnyPosts) {
-	    	System.out.println("Bunny post time: " + post.getTime());
+	    	//System.out.println("Bunny post time: " + post.getTime());
 	    	BunnyPostDTO newPost = new BunnyPostDTO(post);
-	    	System.out.println("new post time" + newPost.time().toString());
+	    	System.out.println("new post time" + newPost.getComments());
+	    	//newPost.setComments(this.getCommentsByBunnyPostId(newPost.getId()));
 	        bunnyPostsDTO.add(newPost);
 	    }
 

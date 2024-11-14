@@ -15,7 +15,7 @@ export class ConfigService {
     return this._login_url;
   }
 
-  private _whoami_url = this._api_url + '/whoami';
+  private _whoami_url = this._api_url + '/users/whoami';
 
   get whoami_url(): string {
     return this._whoami_url;
@@ -27,7 +27,7 @@ export class ConfigService {
     return this._users_url;
   }
 
-  private _bunny_post_url = this._api_url + '/bunnyPosts';
+  private _bunny_post_url = this._api_url + '/bunnyPosts/public';
 
   get bunny_post_url(): string {
     console.log("foo url: ", this._bunny_post_url);
@@ -39,5 +39,12 @@ export class ConfigService {
   get signup_url(): string {
     return this._signup_url;
   }
+  private _comment_url = this._api_url + '/comments/public';
+
+  get comment_url(): string {
+    console.log("comment url: ", this._comment_url);
+    return this._comment_url;
+  }
+
 
 }

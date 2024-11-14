@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
           this.userService.getMyInfo().subscribe();
+          console.log("loged user", this.userService.currentUser);
           this.router.navigate([this.returnUrl]);
         },
         error => {

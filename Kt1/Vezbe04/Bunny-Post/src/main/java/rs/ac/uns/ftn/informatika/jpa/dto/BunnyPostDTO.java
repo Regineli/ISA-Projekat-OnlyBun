@@ -2,10 +2,13 @@ package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
+import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 
 public class BunnyPostDTO {
     private Integer id;
@@ -21,10 +24,14 @@ public class BunnyPostDTO {
         if (bunnyPost.getUser() != null) {
             this.user = new UserDTO(bunnyPost.getUser());
         }
-        /*
+        
         if (bunnyPost.getComments() != null) {
-            this.comments = new CommentDTO(bunnyPost.getComments());
-        }*/
+            this.comments = new ArrayList<>();
+            for (Comment comment : bunnyPost.getComments()) {
+                this.comments.add(new CommentDTO(comment));
+                System.out.println("bunny post comment" + comment.toString());
+            }
+        }
 
     }
     
@@ -41,6 +48,10 @@ public class BunnyPostDTO {
 
     public Integer getId() {
         return id;
+    }
+    
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 
     public String getDetails() {

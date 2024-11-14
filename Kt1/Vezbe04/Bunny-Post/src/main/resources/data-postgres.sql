@@ -47,6 +47,15 @@ VALUES
     ('Awesome!', 1, 3),
     ('Loved it!', 3, 1);
 
+INSERT INTO bunny_post_comments (bunny_post_id, comment_id) 
+VALUES 
+    (1, 1),  -- post 1 comment 1
+    (1, 2),  -- post 1 comment 2
+    (2, 3),  -- post 2 comment 3
+    (3, 4),  -- post 3 comment 1
+    (3, 5),  -- post 3 comment 2
+    (3, 6);  -- post 3 comment 3
+
 -- Lajkovi
 INSERT INTO post_likes (bunny_post_id, user_id) 
 VALUES 
