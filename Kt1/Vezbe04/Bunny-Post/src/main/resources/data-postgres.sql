@@ -14,11 +14,11 @@ SELECT setval('location_id_seq', (SELECT MAX(id) FROM location) + 1);
 INSERT INTO bunnyPost (id, details, user_id, photo, time, location_id, deleted, likes_count) VALUES
 (1, 'post 1 test', 1, 'src/main/webapp/images/photo_8.jpg', CURRENT_TIMESTAMP, 1, false, 0),
 (2, 'post 2 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
-(3, 'post 3 test', 2, 'photo3', CURRENT_TIMESTAMP, 3, false, 0),
+(3, 'post 3 test', 2, 'photo3', '2023-06-20 11:45:00', 3, false, 0),
 (4, 'post 4 test', 1, 'photo1', CURRENT_TIMESTAMP, 1, false, 0),
-(5, 'post 5 test', 1, 'photo1', CURRENT_TIMESTAMP, 1, false, 0),
-(6, 'post 6 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
-(7, 'post 7 test', 2, 'photo3', CURRENT_TIMESTAMP, 3, false, 0);
+(5, 'post 5 test', 1, 'photo1', '2024-06-16 11:45:00', 1, false, 0),
+(6, 'post 6 test', 3, 'photo2', '2023-06-16 11:45:00', 2, false, 0),
+(7, 'post 7 test', 2, 'photo3', '2023-06-17 11:45:00', 3, false, 0);
 
 SELECT setval('bunnypost_id_seq', (SELECT MAX(id) FROM bunnypost) + 1);
 

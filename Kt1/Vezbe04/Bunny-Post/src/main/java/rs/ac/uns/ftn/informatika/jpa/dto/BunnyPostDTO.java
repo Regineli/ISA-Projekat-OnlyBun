@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,10 +13,11 @@ public class BunnyPostDTO {
     private String photo;
     private UserDTO user; // Add UserDTO field
     private List<CommentDTO> comments; // Add comments field
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Adjust the pattern as needed
     private LocalDateTime time;
 
     public BunnyPostDTO(BunnyPost bunnyPost) {
-        this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto());
+        this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto(), bunnyPost.getTime());
         if (bunnyPost.getUser() != null) {
             this.user = new UserDTO(bunnyPost.getUser());
         }
@@ -29,11 +31,11 @@ public class BunnyPostDTO {
     public BunnyPostDTO() {
     }
 
-    public BunnyPostDTO(Integer id, String details, String photo) {
+    public BunnyPostDTO(Integer id, String details, String photo, LocalDateTime time) {
         this.id = id;
         this.details = details;
         this.photo = photo;
-        this.time=LocalDateTime.now();
+        this.time = time;
     }
     
 

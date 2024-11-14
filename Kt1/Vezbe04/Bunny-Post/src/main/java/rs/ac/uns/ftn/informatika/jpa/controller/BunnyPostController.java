@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,19 +51,24 @@ public class BunnyPostController {
 	@Autowired
     private UserService userService;
 
-	@GetMapping
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+	@GetMapping("/public")
+	//@PreAuthorize("hasAnyAuthority('ADMIN', 'USER', '') or isAnonymous()")
 	public ResponseEntity<List<BunnyPostDTO>> getBunnyPosts() {
+	    List<BunnyPost> bunnyPosts = bunnyPostService.findAll();
 
-		List<BunnyPost> BunnyPosts = bunnyPostService.findAll();
+	    // Sort BunnyPosts by 'time' in descending order (newest first)
+	    bunnyPosts.sort(Comparator.comparing(BunnyPost::getTime).reversed());
 
-		// convert BunnyPosts to DTOs
-		List<BunnyPostDTO> bunnyPostsDTO = new ArrayList<>();
-		for (BunnyPost s : BunnyPosts) {
-			bunnyPostsDTO.add(new BunnyPostDTO(s));
-		}
+	    // Convert sorted BunnyPosts to DTOs
+	    List<BunnyPostDTO> bunnyPostsDTO = new ArrayList<>();
+	    for (BunnyPost post : bunnyPosts) {
+	    	System.out.println("Bunny post time: " + post.getTime());
+	    	BunnyPostDTO newPost = new BunnyPostDTO(post);
+	    	System.out.println("new post time" + newPost.time().toString());
+	        bunnyPostsDTO.add(newPost);
+	    }
 
-		return new ResponseEntity<>(bunnyPostsDTO, HttpStatus.OK);
+	    return new ResponseEntity<>(bunnyPostsDTO, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
@@ -118,7 +124,7 @@ public class BunnyPostController {
 	}
 	
 	
-	@GetMapping("/comments")
+	@GetMapping("/public/comments")
 	public ResponseEntity<List<CommentDTO>> getCommentsByBunnyPostId(@RequestParam Integer bunnyPostId) {
 		
 		System.out.println("Get Comment, Bunny post id: " + bunnyPostId.toString());

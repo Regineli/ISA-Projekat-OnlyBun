@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,14 @@ public class UserController {
         //this.userService = userService;
         this.validator = validator;
     }
+	
+	@GetMapping("/whoami")
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+	public User user(Principal user) {
+		System.out.println("User" + user.toString());
+		System.out.println("User username" + user.getName());
+		return this.UserService.findByUsername(user.getName());
+	}
 	
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@GetMapping(value = "/all")

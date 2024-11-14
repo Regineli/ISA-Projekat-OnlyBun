@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -55,7 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/h2-console/**").permitAll()  
-                .antMatchers("/api/foo").permitAll()      
+                .antMatchers("/api/foo").permitAll()
+                .antMatchers("/api/foo").permitAll()
+                .antMatchers("/api/bunnyPosts/public").permitAll()
                 .anyRequest().authenticated()
             .and()
             .cors().and()

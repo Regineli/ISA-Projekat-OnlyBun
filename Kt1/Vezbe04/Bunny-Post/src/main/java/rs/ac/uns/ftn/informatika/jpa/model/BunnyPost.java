@@ -155,6 +155,7 @@ public class BunnyPost {
         this.details = details;
         this.photo = photo;
     }
+    
 
 	public Integer getId() {
 		return id;

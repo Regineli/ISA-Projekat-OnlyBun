@@ -70,6 +70,10 @@ public class UserService {
         return UserRepository.findByUsernameAndPassword(username, password);
     }
     
+    public User findByUsername(String username) {
+        return UserRepository.findByUsername(username);
+    }
+    
     @Transactional
     public User registerUser(User user) {
         // Set status to PENDING_CONFIRMATION
