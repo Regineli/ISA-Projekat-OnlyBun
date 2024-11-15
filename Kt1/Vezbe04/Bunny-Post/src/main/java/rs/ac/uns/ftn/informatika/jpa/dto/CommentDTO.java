@@ -31,7 +31,7 @@ public class CommentDTO {
         
         if (comment.getUser() != null) {
             this.user = new UserDTO(comment.getUser());
-            System.out.println("comment user " + this.userId.toString());
+            System.out.println("comment user " + this.user.toString());
         }
     }
 
@@ -47,6 +47,10 @@ public class CommentDTO {
 
     public String getDetails() {
         return details;
+    }
+    
+    public UserDTO getUser() {
+        return user;
     }
 
     public void setDetails(String details) {

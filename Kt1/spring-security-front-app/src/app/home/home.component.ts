@@ -93,9 +93,11 @@ export class HomeComponent implements OnInit {
   }
 
   // Function to view comments for a bunny post
-  viewComments(bunnyId: number) {
-    console.log(`Viewing comments for bunny post with ID: ${bunnyId}`);
-    // Add logic to display the comments for the selected post (e.g., navigate to a comments page)
+  viewComments(postId: number): void {
+    const post = this.bunnyPosts.find(p => p.id === postId);
+    if (post) {
+      post.showComments = !post.showComments; // Toggle visibility of comments
+    }
   }
 
   hasSignedIn() {

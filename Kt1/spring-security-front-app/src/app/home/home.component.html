@@ -25,6 +25,12 @@
         <button class="post-button" (click)="commentPost(post.id)" *ngIf="hasSignedIn()">Comment</button>
         <button class="post-button" (click)="viewComments(post.id)">View Comments</button>
       </div>
+      <div *ngIf="post.showComments">
+        <h4>Comments</h4>
+        <div *ngFor="let comment of post.comments">
+          <p><strong>{{ comment.user.username }}:</strong> {{ comment.details }}</p>
+        </div>
+      </div>
     </div>
   </div>
   
