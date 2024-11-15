@@ -1,16 +1,29 @@
 <mat-toolbar class="app-navbar" color="primary">
     <div class="right">
         <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="flex-end center">
+            
             <button *ngIf="!hasSignedIn()" mat-raised-button routerLink="/signup">
                 <span>Sign up</span>
             </button>
             <button *ngIf="!hasSignedIn()" mat-raised-button routerLink="/login">
                 <span>Login</span>
             </button>
-            <button *ngIf="hasSignedIn()" [matMenuTriggerFor]="userMenu" class="greeting-button" 
-            mat-button>
-                <span>Hello, {{userName()}}</span>
-            </button>
+            <div class="user">
+                <button *ngIf="hasSignedIn()" class="dropdown-item">
+                    <img src="assets\images\location.png" alt="user">
+                </button>
+                <button *ngIf="hasSignedIn()" class="dropdown-item">
+                    <img src="assets\images\trend.png" alt="user">
+                </button>
+                <button *ngIf="hasSignedIn()" class="dropdown-item">
+                    <img src="assets\images\message.png" alt="user">
+                </button>
+                <button *ngIf="hasSignedIn()" [matMenuTriggerFor]="userMenu" class="greeting-button" 
+                mat-button>
+                    <img src="assets\images\user.png" alt="user">
+                </button>
+            </div>
+            
             <button *ngIf="hasSignedIn()" [matMenuTriggerFor]="userMenu" class="greeting-hamburger" 
             mat-icon-button>
             </button>

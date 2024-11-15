@@ -46,3 +46,26 @@
     width: 100%;             /* Makes sure the center takes the full width */
     margin-top: 20px;        /* Adds some spacing at the top */
 }
+
+.custom-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px; /* Margine unutar dugmeta */
+    margin: 10px; /* Spoljna margina */
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px; /* Zaobljeni uglovi */
+}
+
+.custom-button .button-icon {
+    width: 20px; /* Širina slike */
+    height: 20px; /* Visina slike */
+    margin-right: 8px; /* Razmak između slike i teksta */
+}
+
+.custom-button:hover {
+    background-color: #888e95; /* Boja prilikom prelaska mišem */
+}

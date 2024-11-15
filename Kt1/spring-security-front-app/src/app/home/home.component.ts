@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   whoamIResponse = {};
   allUserResponse = {};
   currentUser!:any;
+  isFormVisible = false;
 
   constructor(
     private config: ConfigService,
@@ -99,6 +100,10 @@ export class HomeComponent implements OnInit {
 
   hasSignedIn() {
     return !!this.userService.currentUser;
+  }
+
+  bunnyPostForm(){
+    this.isFormVisible=!this.isFormVisible;
   }
 
 }

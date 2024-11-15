@@ -36,4 +36,8 @@ export class BunnyPostService {
     return this.apiService.get(this.config.bunny_post_url);
   }
 
+  addBunnyPost(body: any) {
+    console.log(body.value);
+    return this.apiService.post(this.config.bunny_post_add_url, body);
+  }
 }

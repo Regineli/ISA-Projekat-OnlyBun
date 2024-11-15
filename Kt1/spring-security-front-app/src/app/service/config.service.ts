@@ -34,6 +34,13 @@ export class ConfigService {
     return this._bunny_post_url;
   }
 
+  private _bunny_post_add_url = this._api_url + '/bunnyPosts/add';
+
+  get bunny_post_add_url(): string {
+    console.log("foo url: ", this._bunny_post_add_url);
+    return this._bunny_post_add_url;
+  }
+
   private _signup_url = this._auth_url + '/signup';
 
   get signup_url(): string {
@@ -45,6 +52,5 @@ export class ConfigService {
     console.log("comment url: ", this._comment_url);
     return this._comment_url;
   }
-
 
 }
