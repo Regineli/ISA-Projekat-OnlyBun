@@ -1,3 +1,7 @@
+<button *ngIf="hasSignedIn()" (click)="bunnyPostForm()" class="custom-button">
+  <img src="assets/images/add.png" alt="icon" class="button-icon">
+</button>
+<app-bunny-post-form *ngIf="isFormVisible"></app-bunny-post-form>
 
 <div class="content" fxLayout="column" fxLayoutAlign="center center" style="text-align: center;">
 

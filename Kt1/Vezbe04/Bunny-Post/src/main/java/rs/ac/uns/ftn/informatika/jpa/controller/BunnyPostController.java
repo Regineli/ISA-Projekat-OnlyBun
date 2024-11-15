@@ -226,20 +226,16 @@ public class BunnyPostController {
 
         return new ResponseEntity<>(likedUsers, HttpStatus.OK);
     }
-    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @PostMapping("/add")
-    public ResponseEntity<BunnyPost> addNewPost(
-    		@RequestParam String email,
-	        @RequestParam String details,
-	        @RequestParam String photo,
-	        @RequestParam double longitude,
-	        @RequestParam double latitude){  
+    public ResponseEntity<BunnyPost> addNewPost(@RequestBody BunnyPostDTO bunnyPostDTO){  
+    	System.out.print(bunnyPostDTO);
         BunnyPost newPost = bunnyPostService.addNewPost(
-        		userService.findByEmail(email),
-                details,
-                photo,
-                longitude,
-                latitude
+        		userService.findByEmail(bunnyPostDTO.getEmail()),
+        		bunnyPostDTO.getDetails(),
+        		bunnyPostDTO.getPhoto(),
+        		bunnyPostDTO.getLongitude(),
+        		bunnyPostDTO.getLatitude()
         );
 
         return ResponseEntity.ok(newPost); 

@@ -12,14 +12,25 @@ import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 
 public class BunnyPostDTO {
     private Integer id;
+    private String email;
     private String details;
     private String photo;
     private UserDTO user; // Add UserDTO field
     private List<CommentDTO> comments; // Add comments field
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Adjust the pattern as needed
     private LocalDateTime time;
+    private double longitude;
+    private double latitude;
 
-    public BunnyPostDTO(BunnyPost bunnyPost) {
+    public double getLongitude() {
+		return longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public BunnyPostDTO(BunnyPost bunnyPost) {
         this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto(), bunnyPost.getTime());
         if (bunnyPost.getUser() != null) {
             this.user = new UserDTO(bunnyPost.getUser());
@@ -68,6 +79,11 @@ public class BunnyPostDTO {
     public LocalDateTime time() {
 		return time;
 	}
+
+    
+    public String getEmail() {
+    	return email;
+    }
 
 	public void setComments(List<CommentDTO> commentDTOs) {
 		// TODO Auto-generated method stub

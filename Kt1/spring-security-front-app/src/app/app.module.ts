@@ -23,6 +23,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { BunnyPostService } from './service/bunnyPost.service';
+import { BunnyPostFormComponent } from './bunny-post-form/bunny-post-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { BunnyPostService } from './service/bunnyPost.service';
     HeaderComponent,
     LoginComponent,
     SignUpComponent,
+    BunnyPostFormComponent,
   ],
   imports: [
     BrowserModule,

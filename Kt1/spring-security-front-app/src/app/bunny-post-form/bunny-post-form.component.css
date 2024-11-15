@@ -1,0 +1,35 @@
+.keypoint-form-div {
+    display: flex;
+    flex-direction: column;  /* Postavljanje inputa jedan ispod drugog */
+    position: relative;
+    z-index: 1000;
+    background-color: rgb(253, 247, 239);
+    padding: 2%;
+    opacity: 90%;
+    gap: 10px;  /* Razmak između inputa */
+  }
+  
+  .form-map-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2vh;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    width: fit-content;
+  }
+  
+  
+  .map-container {
+    width: 100%;
+  }
+  
+  .main {
+    background-color: red;
+    width: 700px;
+    margin-left: 5%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+  }
+  

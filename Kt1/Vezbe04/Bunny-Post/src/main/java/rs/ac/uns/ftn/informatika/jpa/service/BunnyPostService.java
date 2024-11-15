@@ -206,12 +206,10 @@ public class BunnyPostService {
     	System.out.print("aaaaaaaaaaaaaaaaaa");
         File inputFile = imagePath.toFile();
         
-        // Definišite putanju za kompresovanu sliku sa prefiksom 'compressed_'
         String compressedFileName = "compressed_" + inputFile.getName();
         File compressedFile = new File("src/main/webapp/images/" + compressedFileName);
         System.out.print("napravljen compresfile");
         try {
-            // Učitajte originalnu sliku
             BufferedImage image = ImageIO.read(inputFile);
             if (image.getType() != BufferedImage.TYPE_INT_RGB) {
                 BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -225,8 +223,6 @@ public class BunnyPostService {
             }
             ImageWriter writer = writers.next();
 
-            // Kompresujte sliku
-            
             try (ImageOutputStream output = ImageIO.createImageOutputStream(compressedFile)) {
                 writer.setOutput(output);
 
@@ -242,7 +238,6 @@ public class BunnyPostService {
             }
             writer.dispose();
 
-            // Brišite originalnu sliku
             if (inputFile.exists()) {
                 if (inputFile.delete()) {
                     System.out.println("Original image deleted: " + inputFile.getAbsolutePath());
@@ -251,10 +246,8 @@ public class BunnyPostService {
                 }
             }
 
-            // Ispisujemo gde je sačuvana kompresovana slika
             System.out.println("Compressed image saved to " + compressedFile.getAbsolutePath());
 
-            // Ažurirajte bazu podataka - ovde treba pozvati metod koji ažurira putanju slike u bazi
             updateImagePathInDatabase(compressedFileName, imagePath.toString());
 
         } catch (IOException e) {
