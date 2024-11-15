@@ -52,9 +52,17 @@ public class BunnyPostController {
     private UserService userService;
 
 	@GetMapping("/public")
-	//@PreAuthorize("hasAnyAuthority('ADMIN', 'USER', '') or isAnonymous()")
-	public ResponseEntity<List<BunnyPostDTO>> getBunnyPosts() {
-	    List<BunnyPost> bunnyPosts = bunnyPostService.findAll();
+	public ResponseEntity<List<BunnyPostDTO>> getBunnyPosts(@RequestParam(required = false) String username) {
+	    List<BunnyPost> bunnyPosts;
+
+	    // Check if username is provided
+	    if (username != null && !username.isEmpty()) {
+	        // Fetch BunnyPosts for the specific username
+	        bunnyPosts = bunnyPostService.findByUsername(username);
+	    } else {
+	        // Fetch all BunnyPosts
+	        bunnyPosts = bunnyPostService.findAll();
+	    }
 
 	    // Sort BunnyPosts by 'time' in descending order (newest first)
 	    bunnyPosts.sort(Comparator.comparing(BunnyPost::getTime).reversed());

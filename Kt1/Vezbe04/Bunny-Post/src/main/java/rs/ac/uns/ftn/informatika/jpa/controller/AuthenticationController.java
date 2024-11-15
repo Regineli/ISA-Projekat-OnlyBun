@@ -73,7 +73,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
 
-/*	// Endpoint za registraciju novog korisnika
+	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
 	public ResponseEntity<User> addUser(@RequestBody UserDTO userRequest, UriComponentsBuilder ucBuilder) {
 		User existUser = this.userService.findByUsername(userRequest.getUsername());
@@ -82,8 +82,8 @@ public class AuthenticationController {
 			throw new ResourceConflictException(userRequest.getId(), "Username already exists");
 		}
 
-		User user = this.userService.save(userRequest);
+		User user = this.userService.registerUser(userRequest);
 
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
-	}*/
+	}
 }

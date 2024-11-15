@@ -5,19 +5,19 @@ package rs.ac.uns.ftn.informatika.jpa.exception;
 public class ResourceConflictException extends RuntimeException {
 	private static final long serialVersionUID = 1791564636123821405L;
 
-	private Long resourceId;
+	private Integer resourceId;
 
-	public ResourceConflictException(Long resourceId, String message) {
+	public ResourceConflictException(Integer integer, String message) {
 		super(message);
-		this.setResourceId(resourceId);
+		this.setResourceId(integer);
 	}
 
-	public Long getResourceId() {
+	public Integer getResourceId() {
 		return resourceId;
 	}
 
-	public void setResourceId(Long resourceId) {
-		this.resourceId = resourceId;
+	public void setResourceId(Integer integer) {
+		this.resourceId = integer;
 	}
 
 }

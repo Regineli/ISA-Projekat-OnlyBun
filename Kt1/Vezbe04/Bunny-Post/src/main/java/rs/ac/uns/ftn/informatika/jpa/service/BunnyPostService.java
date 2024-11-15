@@ -75,6 +75,10 @@ public class BunnyPostService {
 		return bunnyPostRepository.findAll();
 	}
 	
+	public List<BunnyPost> findByUsername(String username) {
+	    return bunnyPostRepository.findByUserUsername(username);
+	}
+	
 	public BunnyPost save(BunnyPost bunnyPost) {
 		return bunnyPostRepository.save(bunnyPost);
 	}

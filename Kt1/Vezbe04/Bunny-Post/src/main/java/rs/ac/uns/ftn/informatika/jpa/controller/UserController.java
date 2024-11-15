@@ -117,7 +117,7 @@ public class UserController {
 
 		return new ResponseEntity<>(new UserDTO(User), HttpStatus.OK);
 	}
-	
+	/*
 	@PostMapping(value = "/create")
 	public ResponseEntity<?> saveUser(
 	        @RequestParam String email,
@@ -154,7 +154,7 @@ public class UserController {
 	        error.put("error", "Email or Username already exists");
 	        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 	    }
-	}
+	}*/
 
 
 	

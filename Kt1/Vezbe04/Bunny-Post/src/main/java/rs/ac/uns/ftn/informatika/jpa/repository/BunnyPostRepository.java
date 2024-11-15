@@ -27,6 +27,10 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
     @Query("SELECT c FROM Comment c WHERE c.bunnyPostId = ?1 AND c.userId = ?2")
     List<Comment> findByBunnyPostIdAndUserId(Integer bunnyPostId, Integer userId);
     */
+    
+
+    List<BunnyPost> findByUserUsername(String username);
+
 	
 	@Query("SELECT MAX(b.id) FROM BunnyPost b")
     Integer findMaxId();

@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import rs.ac.uns.ftn.informatika.jpa.dto.UserDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.Role;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
+import rs.ac.uns.ftn.informatika.jpa.repository.RoleRepository;
 import rs.ac.uns.ftn.informatika.jpa.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +26,9 @@ public class UserService {
 	
 	@Autowired
     private EmailService emailService;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	
 	public User findOne(Integer id) {
@@ -36,8 +43,8 @@ public class UserService {
 		return UserRepository.findAll(page);
 	}
 
-	public User save(User User) {
-		return UserRepository.save(User);
+	public User save(User userRequest) {
+		return UserRepository.save(userRequest);
 	}
 
 	public void remove(Integer id) {
@@ -73,7 +80,7 @@ public class UserService {
     public User findByUsername(String username) {
         return UserRepository.findByUsername(username);
     }
-    
+    /*
     @Transactional
     public User registerUser(User user) {
         // Set status to PENDING_CONFIRMATION
@@ -89,6 +96,38 @@ public class UserService {
         
         System.out.println("Saved user: " + savedUser);
         
+        // Send activation email
+        try {
+            emailService.sendActivationEmail(savedUser);
+        } catch (MailException e) {
+            e.printStackTrace();  // Handle exceptions properly
+        }
+
+        return savedUser;
+    }*/
+    
+    @Transactional
+    public User registerUser(UserDTO userDTO) {
+        System.out.println("Register start user: " + userDTO);
+
+        // Convert UserDTO to User entity
+        User user = new User();
+        user.setEmail(userDTO.getEmail());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword()); // You might want to hash the password here
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setAddress(userDTO.getAddress());
+        user.setStatus(UserStatus.PENDING_REGISTRATION_CONFIRMATION);
+
+		// Set roles to USER
+        List<Role> userRoles = roleRepository.findByName("USER");  // Fetch USER role from DB
+        user.setRoles(userRoles); // Set the user role
+
+        // Save user
+        User savedUser = UserRepository.save(user);
+        System.out.println("Saved user: " + savedUser);
+
         // Send activation email
         try {
             emailService.sendActivationEmail(savedUser);
