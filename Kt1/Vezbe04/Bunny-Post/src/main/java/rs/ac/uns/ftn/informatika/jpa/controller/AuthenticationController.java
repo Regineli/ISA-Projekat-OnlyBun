@@ -81,6 +81,7 @@ public class AuthenticationController {
 		if (existUser != null) {
 			throw new ResourceConflictException(userRequest.getId(), "Username already exists");
 		}
+		System.out.println("Signup user: " + userRequest.toString());
 
 		User user = this.userService.registerUser(userRequest);
 

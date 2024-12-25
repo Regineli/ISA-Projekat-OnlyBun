@@ -33,6 +33,10 @@ INSERT INTO USER_ROLE (user_id, role_id) VALUES (1, 1); -- user 1 gets ADMIN rol
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 2); -- user 2 gets USER role
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 2); -- user 3 gets USER role
 
+INSERT INTO USER_FOLLOWERS (follower, following) VALUES (1, 3);
+INSERT INTO USER_FOLLOWERS (follower, following) VALUES (1, 2);
+INSERT INTO USER_FOLLOWERS (follower, following) VALUES (2, 1);
+
 
 
 -- Komentari

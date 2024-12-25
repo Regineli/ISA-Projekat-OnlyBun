@@ -41,9 +41,11 @@ export class BunnyPostService {
   ) {
   }
 
-  getBunnyPosts() {
+  getBunnyPosts(username?: string) {
     console.log("foo service foo url: ", this.config.bunny_post_url);
-    return this.apiService.get(this.config.bunny_post_url);
+    console.log("get bunny post username: " + username);
+    const args = { username: username };
+    return this.apiService.get(this.config.bunny_post_url, args);
   }
 
 }

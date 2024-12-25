@@ -13,7 +13,8 @@
       <p><strong>Details:</strong> {{ post.details }}</p>
       
       <h4>User Information</h4>
-      <p><strong>Username:</strong> {{ post.user.username }}</p>
+      <p (click)="navigateToUserDetails(post.user.username)"><strong>
+        Username:</strong> {{ post.user.username }}</p>
 
       <p>Post date: {{post.time}}</p>
       <div class="post-buttons">
@@ -22,10 +23,17 @@
         <button class="post-button" (click)="viewComments(post.id)">View Comments</button>
       </div>
       <div *ngIf="post.showComments">
-        <h4>Comments</h4>
-        <div *ngFor="let comment of post.comments">
-          <p><strong>{{ comment.user.username }}:</strong> {{ comment.details }}</p>
+        <!-- Check if there are no comments -->
+        <div *ngIf="post.comments.length === 0">
+          <p>No comments</p>
         </div>
+        <div *ngIf="post.comments.length !== 0">
+          <h4>Comments</h4>
+          <!-- Display comments if they exist -->
+          <div *ngFor="let comment of post.comments">
+            <p><strong>{{ comment.user.username }}:</strong> {{ comment.details }}</p>
+          </div>
+        </div>  
       </div>
     </div>
   </div>

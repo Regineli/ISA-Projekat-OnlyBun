@@ -7,7 +7,12 @@ export class ConfigService {
 
   private _api_url = 'http://localhost:8080/api';
   private _auth_url = 'http://localhost:8080/auth';
-  private _user_url = this._api_url + '/user';
+  private _user_url = this._api_url + '/users';
+  private _update_user_url = this._user_url + '/updateUser';
+
+  get update_user_url(): string {
+    return this._update_user_url;
+  }
 
   private _login_url = this._auth_url + '/login';
 
@@ -19,6 +24,12 @@ export class ConfigService {
 
   get whoami_url(): string {
     return this._whoami_url;
+  }
+
+  private _user_details_url = this._user_url + '/public/getByUsername';
+
+  get user_details_url(): string {
+    return this._user_details_url;
   }
 
   private _users_url = this._user_url + '/all';

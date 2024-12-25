@@ -2,11 +2,14 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 
@@ -18,6 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +39,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.informatika.jpa.dto.CourseDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.ExamDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.JwtAuthenticationRequest;
 import rs.ac.uns.ftn.informatika.jpa.dto.UserDTO;
+import rs.ac.uns.ftn.informatika.jpa.dto.UserTokenState;
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Exam;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
@@ -40,6 +49,7 @@ import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
 import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmailService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
+import rs.ac.uns.ftn.informatika.jpa.utils.TokenUtils;
 import rs.ac.uns.ftn.informatika.jpa.dto.BunnyPostDTO; // Make sure you have a BunnyPostDTO class
 import javax.validation.Validator;
 
@@ -47,6 +57,9 @@ import javax.validation.Validator;
 @RequestMapping(value = "api/users")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
+	
+	@Autowired
+	private TokenUtils tokenUtils;
 
 	@Autowired
 	private UserService UserService;
@@ -70,6 +83,11 @@ public class UserController {
 		System.out.println("User" + user.toString());
 		System.out.println("User username" + user.getName());
 		return this.UserService.findByUsername(user.getName());
+	}
+	
+	@GetMapping("/public/getByUsername")
+	public User user(String username) {
+		return this.UserService.findByUsername(username);
 	}
 	
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -307,7 +325,7 @@ public class UserController {
         }
     }
 	
-	@PutMapping("/activate")
+	@PutMapping("/public/activate")
     public ResponseEntity<User> activateUser(@RequestParam Integer userId) {
         try {
             User updatedUser = UserService.activateUser(userId);
@@ -327,4 +345,66 @@ public class UserController {
             return ResponseEntity.status(400).body(null);
         }
     }
+    
+    @PostMapping("/updateUser")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO updatedUser, HttpServletRequest request) {
+    	
+    	System.out.println("Received User: ");
+    	
+    	System.out.println("Received Content-Type: " + request.getContentType());
+        // Log incoming request body for debugging
+        System.out.println("Received User: " + updatedUser);
+    	
+        // Extract the JWT token from the Authorization header
+    	String token = null;
+        String header = request.getHeader("Authorization");
+        System.out.println("Working!");
+        
+        if (header != null && header.startsWith("Bearer ")) {
+            token = header.substring(7); // Extract the token from "Bearer <token>"
+        }     
+        
+        
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No token provided.");
+        }
+        
+        // Validate the token and get the authenticated user
+        String usernameFromToken = tokenUtils.getUsernameFromToken(token);
+        if (usernameFromToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token.");
+        }
+
+        // Check if the logged-in user is the same as the user requesting the update
+        if (!usernameFromToken.equals(updatedUser.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update your own account.");
+        }
+
+        // Fetch the user from the database (example using userService)
+        User currentUser = UserService.findByUsername(usernameFromToken);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+
+        // Update the user details
+        currentUser.setFirstName(updatedUser.getFirstName());
+        currentUser.setLastName(updatedUser.getLastName());
+        currentUser.setAddress(updatedUser.getAddress());
+        // Don't update the password unless explicitly provided
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty() && updatedUser.getPassword() != currentUser.getPassword())
+        {
+            currentUser.setPassword(updatedUser.getPassword());  // Make sure to hash it before saving
+        }
+                
+        System.out.println("Almos done updating user: " + currentUser.toString());
+        // Save the updated user (e.g., save to the database)
+        UserService.save(currentUser);
+
+        // Return success response
+        return ResponseEntity.ok("User updated successfully.");
+    }
+
+    
+    
 }

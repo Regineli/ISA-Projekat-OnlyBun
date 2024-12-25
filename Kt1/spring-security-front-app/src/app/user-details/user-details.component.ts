@@ -3,21 +3,32 @@ import {FooService} from '../service/foo.service';
 import {UserService} from '../service/user.service';
 import {ConfigService} from '../service/config.service';
 import { BunnyPost, BunnyPostService } from '../service/bunnyPost.service';
-import { Router } from '@angular/router';  // Import the Router to navigate
+import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.css']
 })
-export class HomeComponent implements OnInit {
+export class UserDetailsComponent implements OnInit {
 
   bunnyPosts: BunnyPost[] = [];
   whoamIResponse = {};
   allUserResponse = {};
   currentUser!:any;
+  pageUser!:any;
+  username!: string;
+  isEditing: boolean = false;
+  isChangingPassword: boolean = false;
+  passwordData = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+  errorMessage: string | null = null;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private config: ConfigService,
     private bunnyPostService: BunnyPostService,
     private userService: UserService,
@@ -26,29 +37,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadBunnyPosts();    
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.username = params.get('username') || ''; // Get the username from the route parameter
+      this.loadBunnyPosts(); // Load posts for the user
+      this.loadUserDetails();
+    });
+    //this.loadBunnyPosts();
     this.currentUser = this.userService.currentUser;
     console.log("current user home: ", this.currentUser);
   }
-/*
-  makeRequest(path:any) {
-    console.log("home component path: ", path);
-    if (this.config.whoami_url.endsWith(path)) {
-      this.userService.getMyInfo()
-        .subscribe(res => {
-          this.forgeResonseObj(this.whoamIResponse, res, path);
-        }, err => {
-          this.forgeResonseObj(this.whoamIResponse, err, path);
-        });
-    } else {
-      this.userService.getAll()
-        .subscribe(res => {
-          this.forgeResonseObj(this.allUserResponse, res, path);
-        }, err => {
-          this.forgeResonseObj(this.allUserResponse, err, path);
-        });
-    }
-  } */
 
   forgeResonseObj(obj:any, res:any, path:any) {
     obj['path'] = path;
@@ -70,8 +67,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadBunnyPosts() {
-    const path = '/api/bunnyPosts';
-    this.bunnyPostService.getBunnyPosts()
+    this.bunnyPostService.getBunnyPosts(this.username)
         .subscribe(res => {
           this.bunnyPosts = res;
           console.log("bunny post get res: ", res);
@@ -82,11 +78,19 @@ export class HomeComponent implements OnInit {
         });
   }
 
+  loadUserDetails() {
+    console.log('userDetails username: ' + this.username)
+    this.userService.getUserDetails(this.username)
+        .subscribe(res => {
+          this.pageUser = res;
+        }, err => {
+          //this.forgeResonseObj(this.bunnyPosts, err, path);
+          console.log("error getting bunny posts");
+        });
+  }
+
   likePost(bunnyId: number) {
     console.log(`Liked bunny post with ID: ${bunnyId}`);
-    this.userService.getMyInfo().subscribe((data) => {
-      console.log("test whoAmI: " + JSON.stringify(data));
-    });
     // Add logic for liking a post (e.g., update the backend or frontend state)
   }
 
@@ -110,5 +114,32 @@ export class HomeComponent implements OnInit {
 
   navigateToUserDetails(username: string) {
     this.router.navigate(['/user-details', username]);  // Navigate to /user-details/:username
+  }
+
+  saveChanges() {
+    // Call your function to save changes here
+    
+    delete this.pageUser.followers;
+    delete this.pageUser.following;
+
+    console.log('Changes saved:', this.pageUser);
+    this.isEditing = false;
+    this.isChangingPassword = false;
+    // If changing password, also validate and process the password change
+    if (this.passwordData.newPassword && this.passwordData.newPassword === this.passwordData.confirmPassword) {
+      console.log('Password changed');
+      // Implement your password change logic
+    }
+    var message = this.userService.updateUser(this.pageUser);
+    console.log(message);
+    
+  }
+
+  changePassword(){
+    if (this.isChangingPassword){
+      this.isChangingPassword = false;
+    } else{
+      this.isChangingPassword = true;
+    }
   }
 }

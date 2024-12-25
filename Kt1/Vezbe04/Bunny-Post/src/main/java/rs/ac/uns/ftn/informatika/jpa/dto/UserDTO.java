@@ -16,6 +16,9 @@ public class UserDTO {
     private String address;  // Added field for address
     private UserStatus status; // Added field for user status
     private List<Role> roles;
+    
+    private List<String> followers;
+    private List<String> following;
 
     // Default constructor
     public UserDTO() {
@@ -23,14 +26,34 @@ public class UserDTO {
     }
 
     // Constructor for mapping from User entity
-    public UserDTO(User user) {
+    /*public UserDTO(User user) {
         this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getAddress(), user.getStatus());
+    }*/
+    
+    public UserDTO(User user) {
+        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), 
+             user.getUsername(), user.getPassword(), user.getAddress(), 
+             user.getStatus(), user.getFollowerUsernames(), user.getFollowingUsernames(), user.getRoles());
     }
 
-    
+    public UserDTO(Integer id, String email, String firstName, String lastName, String username, 
+            String password, String address, UserStatus status, List<String> followerUsernames, List<String> followingUsernames, List<Role> roles) {
+		 this.id = id;
+		 this.email = email;
+		 this.firstName = firstName;
+		 this.lastName = lastName;
+		 this.username = username;
+		 this.password = password;
+		 this.address = address;
+		 this.status = status;
+		 this.followers = followerUsernames;
+		 this.following = followingUsernames;
+		 this.roles = roles;
+		 // Calculate followers and following counts
+	}
 
     // Constructor for initializing UserDTO
-    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status) {
+    public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status, List<Role> roles) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -113,5 +136,36 @@ public class UserDTO {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+    
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<String> followers) {
+        this.followers = followers;
+    }
+
+    public List<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<String> following) {
+        this.following = following;
+    }
+    
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", status=" + status +
+                ", roles=" + (roles != null ? roles : "[]") + // Handle null roles list
+                '}';
     }
 }

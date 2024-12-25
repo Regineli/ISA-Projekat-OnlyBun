@@ -1,0 +1,145 @@
+<div *ngIf="pageUser" class="user-details" style="margin-bottom: 20px; text-align: left; width: 100%; max-width: 500px;">
+  
+  <h2>User Information</h2>
+
+  <!-- Followers and Following Buttons -->
+  <div style="margin-bottom: 10px;">
+      <button mat-raised-button [matMenuTriggerFor]="followersMenu">
+      Followers ({{ pageUser.followerUsernames.length }})
+      </button>
+      <button mat-raised-button [matMenuTriggerFor]="followingMenu">
+      Following ({{ pageUser.followingUsernames.length }})
+      </button>
+      <!-- Material Menu for Followers -->
+      <mat-menu #followersMenu="matMenu">
+          <mat-divider></mat-divider>
+          <mat-menu-item *ngFor="let follower of pageUser.followerUsernames" (click)="navigateToUserDetails(follower)">
+              <mat-divider></mat-divider>
+          {{ follower }}
+          </mat-menu-item>
+      </mat-menu>
+      <!-- Material Menu for Following -->
+      <mat-menu #followingMenu="matMenu">
+          <mat-divider></mat-divider>
+          <mat-menu-item *ngFor="let following of pageUser.followingUsernames" (click)="navigateToUserDetails(following)">
+              <mat-divider></mat-divider>
+          {{ following }}
+          </mat-menu-item>
+      </mat-menu>
+  </div>
+
+  <!-- Editable Form -->
+  <div *ngIf="isEditing" style="margin-top: 20px;">
+      <form #userForm="ngForm">
+          <!-- Username -->
+          <div>
+              <label for="username">Username:</label>
+              <input matInput id="username" [(ngModel)]="pageUser.username" name="username" required />
+          </div>
+
+          <!-- First Name -->
+          <div>
+              <label for="firstName">First Name:</label>
+              <input matInput id="firstName" [(ngModel)]="pageUser.firstName" name="firstName" required />
+          </div>
+
+          <!-- Last Name -->
+          <div>
+              <label for="lastName">Last Name:</label>
+              <input matInput id="lastName" [(ngModel)]="pageUser.lastName" name="lastName" required />
+          </div>
+
+          <!-- Address -->
+          <div>
+              <label for="address">Address:</label>
+              <input matInput id="address" [(ngModel)]="pageUser.address" name="address" required />
+          </div>
+
+          <!-- Password Change -->
+          <div *ngIf="isChangingPassword">
+              <h3>Change Password</h3>
+              <div>
+                  <label for="currentPassword">Current Password:</label>
+                  <input matInput id="currentPassword" type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword" required />
+              </div>
+              <div>
+                  <label for="newPassword">New Password:</label>
+                  <input matInput id="newPassword" type="password" [(ngModel)]="passwordData.newPassword" name="newPassword" required />
+              </div>
+              <div>
+                  <label for="confirmPassword">Confirm New Password:</label>
+                  <input matInput id="confirmPassword" type="password" [(ngModel)]="passwordData.confirmPassword" name="confirmPassword" required />
+              </div>
+          </div>
+          
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}hi
+          </div>
+
+          <div>
+              <button mat-raised-button color="accent" (click)="saveChanges()" [disabled]="!userForm.form.valid">Save</button>
+          </div>
+          <div>
+            <button mat-raised-button color="accent" (click)="changePassword()">Change Password</button>
+          </div>
+      </form>
+  </div>
+  
+
+  <!-- Display User Info if Not Editing -->
+  <div *ngIf="!isEditing">
+      <p><strong>Username:</strong> {{ pageUser.username }}</p>
+      <p><strong>First Name:</strong> {{ pageUser.firstName }}</p>
+      <p><strong>Last Name:</strong> {{ pageUser.lastName }}</p>
+      <p><strong>Address:</strong> {{ pageUser.address }}</p>
+      <p *ngIf="currentUser?.email == pageUser.email"><strong>Email:</strong> {{ pageUser.email }}</p>
+  </div>
+  <!-- Edit Button -->
+  <button mat-raised-button color="primary" (click)="isEditing = !isEditing">{{ isEditing ? 'Cancel' : 'Edit' }}</button>
+  
+</div>
+
+
+
+<div class="content" fxLayout="column" fxLayoutAlign="center center" style="text-align: center;">
+
+    <!-- Display Cards if bunnyPosts has data -->
+    <div *ngIf="bunnyPosts.length > 0" class="center">
+  
+      <!-- Display each BunnyPost in a centered card -->
+      <div
+        *ngFor="let post of bunnyPosts" class="bunny-post" >
+        
+        <h3>{{ 'Post ' + post.id }}</h3>
+        <img [src]="post.photo" alt="Post Image" style="width: 100%; height: auto;"/>
+        <p><strong>Details:</strong> {{ post.details }}</p>
+        
+        <h4>User Information</h4>
+        <p><strong>Username:</strong> {{ post.user.username }}</p>
+  
+        <p>Post date: {{post.time}}</p>
+        <div class="post-buttons">
+          <button class="post-button" (click)="likePost(post.id)" *ngIf="hasSignedIn()">Like</button>
+          <button class="post-button" (click)="commentPost(post.id)" *ngIf="hasSignedIn()">Comment</button>
+          <button class="post-button" (click)="viewComments(post.id)">View Comments</button>
+        </div>
+        <div *ngIf="post.showComments">                
+          <!-- Check if there are no comments -->
+          <div *ngIf="post.comments.length === 0">
+            <p>No comments</p>
+          </div>
+          <div *ngIf="post.comments.length !== 0">
+            <h4>Comments</h4>
+            <!-- Display comments if they exist -->
+            <div *ngFor="let comment of post.comments">
+              <p><strong>{{ comment.user.username }}:</strong> {{ comment.details }}</p>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  
+  

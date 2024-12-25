@@ -25,20 +25,25 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  get(path: string, args?: any): Observable<any> {
-    const options = {
+  get(path: string, args?: any, username?: string): Observable<any> {
+    const options: any = {
       headers: this.headers,
     };
-
+  
     console.log("header: ", this.headers);
-
+    console.log("path: ", path);
+  
+    // If args are provided, serialize them into query params
     if (args) {
-     // options['params'] = this.serialize(args);
+      options['params'] = this.serialize(args);
     }
-
+    
+    
+  
     return this.http.get(path, options)
       .pipe(catchError(this.checkError.bind(this)));
   }
+  
 
   post(path: string, body: any, customHeaders?: HttpHeaders): Observable<any> {
     return this.request(path, body, RequestMethod.Post, customHeaders);

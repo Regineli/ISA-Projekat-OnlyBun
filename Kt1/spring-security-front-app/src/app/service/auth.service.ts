@@ -40,6 +40,7 @@ export class AuthService {
   }
 
   signup(user:any) {
+    console.log("signup user: ", JSON.stringify(user, null, 2)); // Pretty print the user object
     const signupHeaders = new HttpHeaders({
       'Accept': 'application/json',
       'Content-Type': 'application/json'

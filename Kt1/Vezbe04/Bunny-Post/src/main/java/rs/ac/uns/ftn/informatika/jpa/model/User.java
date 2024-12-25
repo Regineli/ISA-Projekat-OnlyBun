@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -23,13 +24,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.management.relation.RoleList;
 import javax.persistence.*;
@@ -107,6 +112,68 @@ public class User implements UserDetails {
 	@Column(name = "address", nullable = true)
 	private String address;
 	
+	/*
+	@Transient  // This tells Hibernate not to map it to a column in the database
+    public int getFollowersNumber() {
+        return (followersList != null) ? followersList.size() : 0;
+    }
+
+    // Getter for followingNumber
+    @Transient  // This tells Hibernate not to map it to a column in the database
+    public int getFollowingNumber() {
+        return (followingList != null) ? followingList.size() : 0;
+    }*/
+
+	/*
+    public List<String> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<String> followers) {
+		this.followers = followers;
+	}*/
+
+	public Set<UserFollowers> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Set<UserFollowers> following) {
+		this.following = following;
+	}
+
+	@OneToMany(mappedBy = "to", fetch = FetchType.EAGER)
+	@JsonManagedReference("followerReference")
+    private Set<UserFollowers> followers;
+
+	@OneToMany(mappedBy = "from", fetch = FetchType.EAGER)
+	@JsonManagedReference("followingReference")
+    private Set<UserFollowers> following;
+    
+    
+ // Method to get a list of follower usernames (the 'from' username in the UserFollowers table)
+    public List<String> getFollowerUsernames() {
+        List<String> followerUsernames = new ArrayList<>();
+        if (followers != null) {
+            for (UserFollowers userFollower : followers) {
+                followerUsernames.add(userFollower.getFrom().getUsername()); // 'from' refers to the follower (User)
+            }
+        }
+        return followerUsernames;
+    }
+
+    // Method to get a list of following usernames (the 'to' username in the UserFollowers table)
+    public List<String> getFollowingUsernames() {
+        List<String> followingUsernames = new ArrayList<>();
+        if (following != null) {
+            for (UserFollowers userFollower : following) {
+                followingUsernames.add(userFollower.getTo().getUsername()); // 'to' refers to the user being followed (User)
+            }
+        }
+        return followingUsernames;
+    }
+    
+    
+	
 	@Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatus status = UserStatus.PENDING_REGISTRATION_CONFIRMATION;
@@ -118,6 +185,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	//@JsonProperty("role")
     private List<Role> roles;
 	
 	public String getUsername() {
@@ -158,9 +226,42 @@ public class User implements UserDetails {
         this.roles = roles;
     }
     
-    public List<Role> getRole() {
+	/*
+    public List<UserFollowers> getFollowersList() {
+		return followersList;
+	}
+
+	public void setFollowersList(List<UserFollowers> followersList) {
+		this.followersList = followersList;
+	}
+
+	public List<UserFollowers> getFollowingList() {
+		return followingList;
+	}
+
+	public void setFollowingList(List<UserFollowers> followingList) {
+		this.followingList = followingList;
+	}*/
+
+	public List<Role> getRoles() {
        return roles;
     }
+    
+	/*
+    public List<String> getFollowersUsernames() {
+        List<String> usernames = new ArrayList<>();
+        for (UserFollowers userFollower : followersList) {
+            usernames.add(userFollower.getFollower().getUsername());
+        }
+        return usernames;
+    }
+    public List<String> getFollowingUsernames() {
+        List<String> usernames = new ArrayList<>();
+        for (UserFollowers userFollower : followingList) {
+            usernames.add(userFollower.getFollowing().getUsername());
+        }
+        return usernames;
+    }*/
 
 
 	/*
@@ -339,6 +440,7 @@ public class User implements UserDetails {
 	}
 	
 	
+	@JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
