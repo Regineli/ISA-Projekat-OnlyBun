@@ -18,6 +18,7 @@ public class BunnyPostDTO {
     private List<CommentDTO> comments; // Add comments field
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Adjust the pattern as needed
     private LocalDateTime time;
+    private Integer likes;
 
     public BunnyPostDTO(BunnyPost bunnyPost) {
         this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto(), bunnyPost.getTime());
@@ -36,6 +37,14 @@ public class BunnyPostDTO {
     }
     
     public BunnyPostDTO() {
+    }
+    
+    public Integer getLikes() {
+    	return this.likes;
+    }
+    
+    public void setLikes(Integer likes) {
+    	this.likes = likes;
     }
 
     public BunnyPostDTO(Integer id, String details, String photo, LocalDateTime time) {

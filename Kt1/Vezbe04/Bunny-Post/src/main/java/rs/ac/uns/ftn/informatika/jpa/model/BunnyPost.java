@@ -85,8 +85,7 @@ public class BunnyPost {
     private User user;
 	
 	@Column(name="time", nullable = false, unique = false)
-	private LocalDateTime time;	
-	
+	private LocalDateTime time;		
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

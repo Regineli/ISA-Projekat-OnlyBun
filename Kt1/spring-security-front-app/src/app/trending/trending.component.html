@@ -1,0 +1,58 @@
+<div class="trending-container">
+    <div class="statistics">
+      <div class="stat">
+        <h2>Total Bunny Posts: {{ totalBunnyPosts }}</h2>
+      </div>
+      <div class="stat">
+        <h2>Bunny Posts in Last Month: {{ bunnyPostsInLastMonth }}</h2>
+      </div>
+    </div>
+  
+    <!-- Tabs Section -->
+    <div class="tabs">
+      <button class="tab-button" [class.active]="selectedTab === 1" (click)="selectTab(1)">Top Bunny Posts</button>
+      <button class="tab-button" [class.active]="selectedTab === 2" (click)="selectTab(2)">Top Bunny Posts in Last Week</button>
+      <button class="tab-button" [class.active]="selectedTab === 3" (click)="selectTab(3)">Top Users</button>
+    </div>
+  
+    <!-- Content Based on Selected Tab -->
+    <div class="tab-content">
+      <!-- Tab 1: Top Bunny Posts -->
+      <div *ngIf="selectedTab === 1">
+        <h3>Top Bunny Posts</h3>
+        <ul>
+          <li *ngFor="let post of topBunnyPosts">
+            <strong>Post ID:</strong> {{ post.id }}<br>
+            <strong>Details:</strong> {{ post.details }}<br>
+            <strong>Likes:</strong> {{ post.likes }}<br>
+            <strong>Time:</strong> {{ post.time }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Tab 2: Top Bunny Posts in Last Week -->
+      <div *ngIf="selectedTab === 2">
+        <h3>Top Bunny Posts in Last Week</h3>
+        <ul>
+          <li *ngFor="let post of topBunnyPostsInLastWeek">
+            <strong>Post ID:</strong> {{ post.id }}<br>
+            <strong>Details:</strong> {{ post.details }}<br>
+            <strong>Likes:</strong> {{ post.likes }}<br>
+            <strong>Time:</strong> {{ post.time }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Tab 3: Top Users -->
+      <div *ngIf="selectedTab === 3">
+        <h3>Top Users</h3>
+        <ul>
+            <li *ngFor="let user of topUsers">
+            <strong>Username:</strong> {{ user.username }}<br>
+            <strong>Likes:</strong> {{ user.totalLikes }}
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  

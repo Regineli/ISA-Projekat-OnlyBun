@@ -107,6 +107,16 @@ public class BunnyPostService {
 	    return commentDTOs;
 	}
 	
+	public Integer getBunnyPostsInLastMonth() {
+        // Get the current time minus one month
+        LocalDateTime lastMonth = LocalDateTime.now().minusMonths(1);
+        return bunnyPostRepository.countBunnyPostsInLastMonth(lastMonth);
+    }
+	
+	public Integer getTotalBunnyPosts() {
+        return bunnyPostRepository.countAllBunnyPosts();
+    }
+	
 	public Integer findNextId() {
         Integer maxId = bunnyPostRepository.findMaxId();
         return (maxId != null) ? maxId + 1 : 1;

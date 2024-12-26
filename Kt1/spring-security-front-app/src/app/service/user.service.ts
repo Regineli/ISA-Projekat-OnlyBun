@@ -47,6 +47,10 @@ export class UserService {
     return this.apiService.get(this.config.users_url);
   }
 
+  getUsersTrending() {
+    return this.apiService.get(this.config.user_trending_url);
+  }
+
   updateUser(user: any): Observable<any> {
     const token = localStorage.getItem('jwtToken');  // Assuming the JWT token is saved in localStorage
 

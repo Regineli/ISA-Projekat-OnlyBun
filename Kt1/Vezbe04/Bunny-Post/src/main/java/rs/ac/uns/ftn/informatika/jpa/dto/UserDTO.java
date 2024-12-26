@@ -16,6 +16,7 @@ public class UserDTO {
     private String address;  // Added field for address
     private UserStatus status; // Added field for user status
     private List<Role> roles;
+    private Integer total_likes;
     
     private List<String> followers;
     private List<String> following;
@@ -23,7 +24,7 @@ public class UserDTO {
     // Default constructor
     public UserDTO() {
 
-    }
+    }   
 
     // Constructor for mapping from User entity
     /*public UserDTO(User user) {
@@ -77,6 +78,15 @@ public class UserDTO {
     public Integer getId() {
         return id;
     }
+    
+    public void setTotalLikes(Integer likes) {
+		this.total_likes = likes;
+	}
+    
+    public Integer getTotalLikes() {
+		return this.total_likes;
+	}
+
 
     public void setId(Integer id) {
         this.id = id;

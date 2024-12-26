@@ -90,7 +90,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   likePost(bunnyId: number) {
-    console.log(`Liked bunny post with ID: ${bunnyId}`);
+    console.log(`Liked bunny post with ID: ${bunnyId}`);    
     // Add logic for liking a post (e.g., update the backend or frontend state)
   }
 

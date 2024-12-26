@@ -4,6 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { TrendingComponent } from './trending/trending.component';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,14 @@ const routes: Routes = [
     path: 'user-details/:username',
     component: UserDetailsComponent,
   },
+  {
+    path: 'trending',
+    component: TrendingComponent,
+  },
+  {
+    path: 'map',
+    component: MapComponent,
+  }
 ];
 
 @NgModule({

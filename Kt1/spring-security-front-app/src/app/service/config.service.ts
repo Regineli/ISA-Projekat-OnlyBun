@@ -9,6 +9,18 @@ export class ConfigService {
   private _auth_url = 'http://localhost:8080/auth';
   private _user_url = this._api_url + '/users';
   private _update_user_url = this._user_url + '/updateUser';
+  private _user_trending_url = this._user_url + '/trending';
+
+  private _bunny_post_url = this._api_url + '/bunnyPosts/public';
+  private _bunnyPost_trending_url = this._api_url + '/bunnyPosts/trending';
+
+  get bunnyPost_trending_url(): string {
+    return this._bunnyPost_trending_url;
+  }
+
+  get user_trending_url(): string {
+    return this._user_trending_url;
+  }
 
   get update_user_url(): string {
     return this._update_user_url;
@@ -36,9 +48,7 @@ export class ConfigService {
 
   get users_url(): string {
     return this._users_url;
-  }
-
-  private _bunny_post_url = this._api_url + '/bunnyPosts/public';
+  }  
 
   get bunny_post_url(): string {
     console.log("foo url: ", this._bunny_post_url);

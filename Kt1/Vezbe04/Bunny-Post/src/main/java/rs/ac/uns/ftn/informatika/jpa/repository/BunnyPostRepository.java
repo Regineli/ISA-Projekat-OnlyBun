@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,12 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
 
     @Query("SELECT b FROM BunnyPost b LEFT JOIN FETCH b.likedByUsers WHERE b.id = ?1")
     BunnyPost findOneWithLikes(Integer bunnyPostID);
+    
+    @Query("SELECT COUNT(b) FROM BunnyPost b")
+	Integer countAllBunnyPosts();
+    
+    @Query("SELECT COUNT(b) FROM BunnyPost b WHERE b.time >= :lastMonth")
+    Integer countBunnyPostsInLastMonth(LocalDateTime lastMonth);
 
 	/*
 	@Query("SELECT c FROM Comment c WHERE c.bunnyPost.id = ?1")

@@ -2,7 +2,9 @@ package rs.ac.uns.ftn.informatika.jpa.controller;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,8 +34,10 @@ import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 import rs.ac.uns.ftn.informatika.jpa.model.Exam;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
+import rs.ac.uns.ftn.informatika.jpa.model.UserLikePost;
 import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.CommentService;
+import rs.ac.uns.ftn.informatika.jpa.service.UserLikePostService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
 
@@ -41,6 +45,9 @@ import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 @RequestMapping(value = "api/bunnyPosts")
 @CrossOrigin(origins = "http://localhost:4200")  // Allow only Angular app
 public class BunnyPostController {
+	
+	@Autowired
+	private UserLikePostService userLikePostService;
 
 	@Autowired
 	private BunnyPostService bunnyPostService;
@@ -91,6 +98,66 @@ public class BunnyPostController {
 		}
 
 		return new ResponseEntity<>(new BunnyPostDTO(bunnyPost), HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping(value = "/trending")
+	public ResponseEntity<Map<String, Object>> getBunnyPostStats() {
+	    // Step 1: Call BunnyPostService to get total number of BunnyPosts
+	    Integer totalBunnyPosts = bunnyPostService.getTotalBunnyPosts();
+
+	    // Step 2: Call BunnyPostService to get number of BunnyPosts in the last month
+	    Integer bunnyPostsInLastMonth = bunnyPostService.getBunnyPostsInLastMonth();
+
+	    // Step 3: Prepare the response with BunnyPost statistics
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("totalBunnyPosts", totalBunnyPosts);
+	    response.put("bunnyPostsInLastMonth", bunnyPostsInLastMonth);
+	    
+	    // get top liked bunny posts
+	    List<Integer> topLikedBunnyPosts = userLikePostService.get10TopLikedBunnyPosts();
+	    List<BunnyPostDTO> topBunnyPosts = new ArrayList<>();
+
+	    // Step 5: Loop through each top liked bunny post, find the BunnyPost by ID, and add it to the list
+	    for (Integer topPost : topLikedBunnyPosts) {
+	        Integer bunnyPostId = topPost; // Assuming the bunny post ID is at index 0 in the array
+
+	        // Fetch the BunnyPost entity by ID
+	        BunnyPost bunnyPost = bunnyPostService.findOne(bunnyPostId);
+	        BunnyPostDTO bunnyDTO = new BunnyPostDTO(bunnyPost);
+
+	        if (bunnyPost != null) {
+	            // Add the BunnyPost to the list
+	        	Integer likes = userLikePostService.countLikesForBunnyPost(bunnyPostId);
+	        	bunnyDTO.setLikes(likes);
+	            topBunnyPosts.add(bunnyDTO);
+	        }
+	    }
+	    response.put("topBunnyPosts", topBunnyPosts);
+	    
+	    // get top liked in last 7 days
+	    List<Integer> topLikedBunnyPostsInLastWeek = userLikePostService.get5TopLikedBunnyPostsInLastWeek();
+	    List<BunnyPostDTO> topBunnyPostsInLastWeek = new ArrayList<>();
+
+	    // Step 5: Loop through each top liked bunny post, find the BunnyPost by ID, and add it to the list
+	    for (Integer topPost : topLikedBunnyPostsInLastWeek) {
+	        Integer bunnyPostId = topPost; // Assuming the bunny post ID is at index 0 in the array
+
+	        // Fetch the BunnyPost entity by ID
+	        BunnyPost bunnyPost = bunnyPostService.findOne(bunnyPostId);
+	        BunnyPostDTO bunnyDTO = new BunnyPostDTO(bunnyPost);
+
+	        if (bunnyPost != null) {
+	            // Add the BunnyPost to the list
+	        	Integer likes = userLikePostService.countLikesForBunnyPost(bunnyPostId);
+	        	bunnyDTO.setLikes(likes);
+	        	topBunnyPostsInLastWeek.add(bunnyDTO);
+	        }
+	    }
+	    response.put("topBunnyPostsInLastWeek", topBunnyPostsInLastWeek);
+
+	    // Step 4: Return the response
+	    return ResponseEntity.ok(response);
 	}
 
 	@PostMapping(consumes = "application/json")

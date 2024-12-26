@@ -24,6 +24,8 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { BunnyPostService } from './service/bunnyPost.service';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { TrendingComponent } from './trending/trending.component';
+import { MapComponent } from './map/map.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +35,8 @@ import { UserDetailsComponent } from './user-details/user-details.component';
     LoginComponent,
     SignUpComponent,
     UserDetailsComponent,
+    TrendingComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,

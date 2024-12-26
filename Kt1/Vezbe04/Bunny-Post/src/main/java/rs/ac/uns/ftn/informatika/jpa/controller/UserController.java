@@ -45,9 +45,11 @@ import rs.ac.uns.ftn.informatika.jpa.dto.UserTokenState;
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Exam;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
+import rs.ac.uns.ftn.informatika.jpa.model.UserLikePost;
 import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
 import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.EmailService;
+import rs.ac.uns.ftn.informatika.jpa.service.UserLikePostService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 import rs.ac.uns.ftn.informatika.jpa.utils.TokenUtils;
 import rs.ac.uns.ftn.informatika.jpa.dto.BunnyPostDTO; // Make sure you have a BunnyPostDTO class
@@ -57,6 +59,9 @@ import javax.validation.Validator;
 @RequestMapping(value = "api/users")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
+	
+	@Autowired
+	private UserLikePostService userLikePostService;
 	
 	@Autowired
 	private TokenUtils tokenUtils;
@@ -404,6 +409,32 @@ public class UserController {
         // Return success response
         return ResponseEntity.ok("User updated successfully.");
     }
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping(value = "/trending")
+    public ResponseEntity<List<UserDTO>> getTrending() {
+        // Step 1: Get users with most likes in the last 7 days
+        List<Integer> topUsers = userLikePostService.getTopUsersWithMostLikes();
+
+        // Step 2: Retrieve UserDTOs for each user ID
+        List<UserDTO> users = new ArrayList<>();
+        for (Integer userId : topUsers) {
+            // Step 3: Call userService to find user by ID
+            User user = UserService.findOne(userId);
+            if (user != null) {
+                // Add username to the list
+            	UserDTO userDto = new UserDTO(user);            	
+            	Integer likes = userLikePostService.countUserLikes(userId);
+            	
+            	userDto.setTotalLikes(likes);
+                users.add(userDto);
+            }
+        }
+        
+        users.sort((u1, u2) -> Integer.compare(u2.getTotalLikes(), u1.getTotalLikes()));
+        return ResponseEntity.ok(users);
+    }
+
 
     
     

@@ -12,6 +12,7 @@ export interface User {
     address: string;
     status: string;
     roles: any[] | null;
+    likes: number;
   }
   
   export interface Comment {
@@ -48,4 +49,7 @@ export class BunnyPostService {
     return this.apiService.get(this.config.bunny_post_url, args);
   }
 
+  getBunnyPostTrending() {
+    return this.apiService.get(this.config.bunnyPost_trending_url);
+  }
 }

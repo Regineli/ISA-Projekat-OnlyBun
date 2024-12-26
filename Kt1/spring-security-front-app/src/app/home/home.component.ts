@@ -84,9 +84,17 @@ export class HomeComponent implements OnInit {
 
   likePost(bunnyId: number) {
     console.log(`Liked bunny post with ID: ${bunnyId}`);
-    this.userService.getMyInfo().subscribe((data) => {
-      console.log("test whoAmI: " + JSON.stringify(data));
+    this.userService.getUsersTrending().subscribe((data) => {
+      console.log("user trending: " + JSON.stringify(data));
     });
+
+    this.bunnyPostService.getBunnyPostTrending().subscribe((data) => {
+      var x = data.totalBunnyPosts;
+      console.log("total bunny posts: " + x);
+      console.log("bunnyPost trending: " + JSON.stringify(data));
+    });
+
+    
     // Add logic for liking a post (e.g., update the backend or frontend state)
   }
 
