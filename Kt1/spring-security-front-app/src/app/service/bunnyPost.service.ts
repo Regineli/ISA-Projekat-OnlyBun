@@ -52,4 +52,8 @@ export class BunnyPostService {
   getBunnyPostTrending() {
     return this.apiService.get(this.config.bunnyPost_trending_url);
   }
+
+  getBunnyPostLocations() {
+    return this.apiService.get(this.config.bunnyPost_locations);
+  }  
 }

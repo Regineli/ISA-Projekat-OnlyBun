@@ -95,7 +95,7 @@
       <p *ngIf="currentUser?.email == pageUser.email"><strong>Email:</strong> {{ pageUser.email }}</p>
   </div>
   <!-- Edit Button -->
-  <button mat-raised-button color="primary" (click)="isEditing = !isEditing">{{ isEditing ? 'Cancel' : 'Edit' }}</button>
+  <button mat-raised-button color="primary" *ngIf="hasSignedIn()" (click)="isEditing = !isEditing">{{ isEditing ? 'Cancel' : 'Edit' }}</button>
   
 </div>
 

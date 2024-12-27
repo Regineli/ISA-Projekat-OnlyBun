@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';  // Import Leaflet biblioteku
+import { BunnyPostService } from '../service/bunnyPost.service';
 
 @Component({
   selector: 'app-map',
@@ -9,21 +10,34 @@ import * as L from 'leaflet';  // Import Leaflet biblioteku
 export class MapComponent implements OnInit {
   // Korisničke koordinate (latitude, longitude)
   userLocation = {
-    lat: 44.8176,  // Primer latitude (možete postaviti pravu vrednost)
-    lng: 20.4633   // Primer longitude (možete postaviti pravu vrednost)
+    lat: 45.2671,  // Latitude for Novi Sad city center
+    lng: 19.8335   // Longitude for Novi Sad city center
   };
+  
+  // List of posts with updated coordinates in Novi Sad
+  posts: any[] = [];
+  
 
-  // Lista objava sa koordinatama
-  posts = [
-    { id: 1, lat: 44.8180, lng: 20.4640, details: "Post 1" },
-    { id: 2, lat: 44.8160, lng: 20.4620, details: "Post 2" },
-    { id: 3, lat: 44.8190, lng: 20.4650, details: "Post 3" }
-  ];
-
-  constructor() { }
+  constructor(private bunnyPostService: BunnyPostService) { }
 
   ngOnInit(): void {
-    this.initializeMap();
+    this.loadLocations();
+    //this.initializeMap();    
+  }
+
+  async loadLocations() {
+    try {
+      const data = await this.bunnyPostService.getBunnyPostLocations().toPromise();
+      if (data) {
+        this.posts = data;  // Assign the fetched posts to this.posts
+        console.log("Posts data:", this.posts);
+        this.initializeMap();  // Now initialize the map after data is loaded
+      } else {
+        console.error("Failed to load locations.");
+      }
+    } catch (error) {
+      console.error("Error loading locations:", error);
+    }
   }
 
   initializeMap(): void {
@@ -35,17 +49,39 @@ export class MapComponent implements OnInit {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Dodaj marker za korisnika
-    L.marker([this.userLocation.lat, this.userLocation.lng])
+    // Kreiraj prilagođenu ikonicu za korisnika
+    const userIcon = L.icon({
+        iconUrl: 'assets/icons/pin.png', // Zameni sa relativnom putanjom do ikonice
+        iconSize: [48, 48],             // Prilagodi veličinu [širina, visina]
+        iconAnchor: [16, 48],           // Tačka sidrišta (dno ikonice)
+        popupAnchor: [0, -48]           // Tačka sidrišta za popup
+    });
+
+    const postIcon = L.icon({
+      iconUrl: 'assets/icons/post.png', // Zameni sa relativnom putanjom do ikonice
+      iconSize: [60, 38],             // Prilagodi veličinu [širina, visina]
+      iconAnchor: [16, 48],           // Tačka sidrišta (dno ikonice)
+      popupAnchor: [0, -48]           // Tačka sidrišta za popup
+  });
+
+    // Dodaj prilagođeni marker za lokaciju korisnika
+    L.marker([this.userLocation.lat, this.userLocation.lng], { icon: userIcon })
       .addTo(map)
       .bindPopup("Your Location")
       .openPopup();
 
     // Dodaj markere za objave
+    var i = 0;
+    console.log("start locations");
+    console.log("Posts data: ", JSON.stringify(this.posts));
     this.posts.forEach(post => {
-      L.marker([post.lat, post.lng])
+      i+=1;
+      console.log("location[" + i + "]: " + post.location.latitude + ", " + post.location.longitude + ", " + post.details);
+      L.marker([post.location.latitude, post.location.longitude], { icon: postIcon })
         .addTo(map)
-        .bindPopup(post.details);
+        .bindPopup(post.details)
+        .openPopup();
     });
   }
+
 }

@@ -1,37 +1,56 @@
+INSERT INTO location (id, latitude, longitude) 
+VALUES 
+	(1, 45.3671, 19.8735),  
+    (2, 45.2500, 19.8500),  -- Near Petrovaradin
+    (3, 45.2600, 19.8100),  -- Near Liman
+    (4, 45.2700, 19.8400),  -- North of Novi Sad center
+    (5, 45.2550, 19.8600),  -- Near Petrovaradin fortress
+    (6, 45.2650, 19.8000),  -- South Novi Sad
+    (7, 45.2750, 19.8300),  -- Near Strand beach
+    (8, 45.2450, 19.8400),  -- Near Telep
+    (9, 45.2500, 19.8200),  -- South-east Novi Sad
+    (10, 45.2800, 19.8350), -- North of Strand
+    (11, 45.2400, 19.8500), -- Near Rumenka road
+    (12, 45.2600, 19.8600), -- North-east Novi Sad
+    (13, 45.2700, 19.8200), -- West of Strand
+    (14, 45.2550, 19.8400), -- Petrovaradin hill area
+    (15, 45.2450, 19.8100), -- Near Adice
+    (16, 45.2750, 19.8400), -- Strand surroundings
+    (17, 45.2500, 19.8250), -- East Novi Sad
+    (18, 45.2600, 19.8500); -- North-east Liman
+SELECT setval('location_id_seq', (SELECT MAX(id) FROM location) + 1);
+
 
 -- Inserting users
-INSERT INTO app_user (id, email, username, password, first_name, last_name, address, status) 
+INSERT INTO app_user (id, email, username, password, first_name, last_name, address, status, location_id) 
 VALUES 
-(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
+(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', 2),
 --(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
-(2, 'sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE'),
-(3, 'sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE'),
-(4, 'marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE'),
-(5, 'emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE'),
-(6, 'michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE'),
-(7, 'susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE'),
-(8, 'davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE'),
-(9, 'lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE'),
-(10, 'robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE');
-
-INSERT INTO location (id, latitude, longitude) VALUES (1, 45.0, 19.0), (2, 44.8, 20.5), (3, 43.9, 18.4);
-SELECT setval('location_id_seq', (SELECT MAX(id) FROM location) + 1);
+(2, 'sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE', 5),
+(3, 'sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE', 5),
+(4, 'marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE', 5),
+(5, 'emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE', 4),
+(6, 'michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE', 6),
+(7, 'susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE', 7),
+(8, 'davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE', 8),
+(9, 'lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE', 10),
+(10, 'robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE', 9);
 
 -- Inserting comments for bunnyPosts
 INSERT INTO bunnyPost (id, details, user_id, photo, time, location_id, deleted, likes_count) VALUES
 (1, 'post 1 test', 1, 'src/main/webapp/images/photo_8.jpg', CURRENT_TIMESTAMP, 1, false, 0),
 (2, 'post 2 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
 (3, 'post 3 test', 2, 'photo3', '2023-06-20 11:45:00', 3, false, 0),
-(4, 'post 4 test', 1, 'photo1', CURRENT_TIMESTAMP, 1, false, 0),
-(5, 'post 5 test', 1, 'photo1', '2024-06-16 11:45:00', 1, false, 0),
-(6, 'post 6 test', 3, 'photo2', '2023-06-16 11:45:00', 2, false, 0),
-(7, 'post 7 test', 2, 'photo3', '2023-06-17 11:45:00', 3, false, 0),
-(8, 'post 8 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
-(9, 'post 9 test', 2, 'photo3', '2023-06-20 11:45:00', 3, false, 0),
-(10, 'post 10 test', 1, 'photo1', CURRENT_TIMESTAMP, 1, false, 0),
-(11, 'post 11 test', 1, 'photo1', CURRENT_TIMESTAMP, 1, false, 0),
-(12, 'post 12 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
-(13, 'post 13 test', 2, 'photo3', '2023-06-17 11:45:00', 3, false, 0);
+(4, 'post 4 test', 1, 'photo1', CURRENT_TIMESTAMP, 5, false, 0),
+(5, 'post 5 test', 1, 'photo1', '2024-06-16 11:45:00', 11, false, 0),
+(6, 'post 6 test', 3, 'photo2', '2023-06-16 11:45:00', 12, false, 0),
+(7, 'post 7 test', 2, 'photo3', '2023-06-17 11:45:00', 13, false, 0),
+(8, 'post 8 test', 3, 'photo2', CURRENT_TIMESTAMP, 14, false, 0),
+(9, 'post 9 test', 2, 'photo3', '2023-06-20 11:45:00', 15, false, 0),
+(10, 'post 10 test', 1, 'photo1', CURRENT_TIMESTAMP, 16, false, 0),
+(11, 'post 11 test', 1, 'photo1', CURRENT_TIMESTAMP, 17, false, 0),
+(12, 'post 12 test', 3, 'photo2', CURRENT_TIMESTAMP, 18, false, 0),
+(13, 'post 13 test', 2, 'photo3', '2023-06-17 11:45:00', 10, false, 0);
 
 SELECT setval('bunnypost_id_seq', (SELECT MAX(id) FROM bunnypost) + 1);
 

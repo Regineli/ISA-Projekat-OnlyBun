@@ -364,7 +364,7 @@ public class UserController {
         // Extract the JWT token from the Authorization header
     	String token = null;
         String header = request.getHeader("Authorization");
-        System.out.println("Working!");
+        //System.out.println("Working!");
         
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7); // Extract the token from "Bearer <token>"
@@ -435,7 +435,21 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping(value = "/location")
+    public ResponseEntity<List<Double>> getLocation(HttpServletRequest request) {
+    	String token = tokenUtils.getToken(request);
+    	String usernameFromToken = tokenUtils.getUsernameFromToken(token);
+    	
+    	User user = UserService.findByUsername(usernameFromToken);
+    	
+    	List<Double> coords = new ArrayList<Double>();
+    	
+    	coords.add(user.getLocation().getLatitude());
+    	coords.add(user.getLocation().getLongitude());
+    	
+    	return ResponseEntity.ok(coords);
+    }
     
     
 }

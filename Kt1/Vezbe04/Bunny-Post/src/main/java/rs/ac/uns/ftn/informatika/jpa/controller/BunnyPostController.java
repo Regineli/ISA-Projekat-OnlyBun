@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.tools.DocumentationTool.Location;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,16 @@ import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.CommentService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserLikePostService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
+import rs.ac.uns.ftn.informatika.jpa.utils.TokenUtils;
 
 
 @RestController
 @RequestMapping(value = "api/bunnyPosts")
 @CrossOrigin(origins = "http://localhost:4200")  // Allow only Angular app
 public class BunnyPostController {
+	
+	@Autowired
+	private TokenUtils tokenUtils;
 	
 	@Autowired
 	private UserLikePostService userLikePostService;
@@ -293,6 +298,28 @@ public class BunnyPostController {
 
         return new ResponseEntity<>(likedUsers, HttpStatus.OK);
     }
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping(value = "/locations")
+	public ResponseEntity<List<BunnyPostDTO>> getBunnyPostLocations(HttpServletRequest request) {
+    	String token = tokenUtils.getToken(request);
+    	String usernameFromToken = tokenUtils.getUsernameFromToken(token);
+    	 
+    	System.out.println("Bunny post locations");
+    	
+    	List<BunnyPost> bunnyPosts = bunnyPostService.findPostsInRange(usernameFromToken);
+    	List<BunnyPostDTO> bunnyDTOs = new ArrayList<BunnyPostDTO>();
+    	
+    	System.out.println("bunnyPosts: " + bunnyPosts.toString());
+    	
+    	for (BunnyPost bp : bunnyPosts) {
+    		BunnyPostDTO bpDTO = new BunnyPostDTO(bp);
+    		bunnyDTOs.add(bpDTO);    		
+    	}
+    	
+	    // Step 4: Return the response
+	    return ResponseEntity.ok(bunnyDTOs);
+	}
     
     @PostMapping("/add")
     public ResponseEntity<BunnyPost> addNewPost(

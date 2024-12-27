@@ -37,6 +37,18 @@ public interface BunnyPostRepository extends JpaRepository<BunnyPost, Integer> {
     
 
     List<BunnyPost> findByUserUsername(String username);
+    
+    @Query("SELECT bp " + 
+    	   "FROM BunnyPost bp " + 
+    	   "WHERE SQRT(" + 
+    	       "POWER(bp.location.latitude - :userLatitude, 2) + " + 
+    	       "POWER(bp.location.longitude - :userLongitude, 2)" + 
+    	    ") <= :range")
+    	List<BunnyPost> findPostsInRange(
+    	   double userLatitude, 
+    	   double userLongitude, 
+    	   double range
+    	);
 
 	
 	@Query("SELECT MAX(b.id) FROM BunnyPost b")

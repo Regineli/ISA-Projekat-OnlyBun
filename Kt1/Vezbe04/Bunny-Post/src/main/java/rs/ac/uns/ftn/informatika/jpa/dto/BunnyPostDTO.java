@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Comment;
+import rs.ac.uns.ftn.informatika.jpa.model.Location;
 
 public class BunnyPostDTO {
     private Integer id;
@@ -19,6 +20,7 @@ public class BunnyPostDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Adjust the pattern as needed
     private LocalDateTime time;
     private Integer likes;
+    private Location location;
 
     public BunnyPostDTO(BunnyPost bunnyPost) {
         this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto(), bunnyPost.getTime());
@@ -33,7 +35,15 @@ public class BunnyPostDTO {
                 System.out.println("bunny post comment" + comment.toString());
             }
         }
+        
+        if(bunnyPost.getLocation() != null) {
+        	this.location = bunnyPost.getLocation();
+        }
 
+    }
+    
+    public Location getLocation() {
+    	return this.location;
     }
     
     public BunnyPostDTO() {

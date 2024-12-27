@@ -122,6 +122,17 @@ public class BunnyPostService {
         return (maxId != null) ? maxId + 1 : 1;
     }
 	
+	public List<BunnyPost> findPostsInRange(String username){		
+		User user = userRepository.findByUsername(username);
+		
+		Location l = user.getLocation();
+		double range = 0.05;
+		System.out.println("lat: " + l.getLatitude());
+		System.out.println("long: " + l.getLongitude());
+		System.out.println("range: " + range);
+		return bunnyPostRepository.findPostsInRange(l.getLatitude(), l.getLongitude(), range);
+	}
+	
 	public BunnyPost addNewPost(User user, String details, String base64Photo, double longitude, double latitude) {
 	    BunnyPost newPost = new BunnyPost(details, user); // Postavi `photo` privremeno kao prazan string
 	    
@@ -205,11 +216,8 @@ public class BunnyPostService {
 	}
     
     private boolean isOlderThanOneMonth(Path path, LocalDate oneMonthAgo) {
-        try {
-            return Files.getLastModifiedTime(path).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isBefore(oneMonthAgo);
-        } catch (IOException e) {
-            return false;
-        }
+        return true;
+		//return Files.getLastModifiedTime(path).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isBefore(oneMonthAgo);
     }
 
     private void compressImage(Path imagePath) {

@@ -16,10 +16,12 @@
             </button>
             <mat-menu #userMenu ="matMenu">
                 <mat-button routerLink="/trending">Trending</mat-button>
-            </mat-menu>
-            <mat-menu #userMenu ="matMenu">
+                <mat-divider></mat-divider>
+                <mat-button routerLink="/map">Map</mat-button>
+                <mat-divider></mat-divider>
                 <mat-button (click)="logout()">sign out</mat-button>
             </mat-menu>
+
         </div>
     </div>
 </mat-toolbar>

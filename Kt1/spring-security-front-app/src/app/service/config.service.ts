@@ -13,6 +13,11 @@ export class ConfigService {
 
   private _bunny_post_url = this._api_url + '/bunnyPosts/public';
   private _bunnyPost_trending_url = this._api_url + '/bunnyPosts/trending';
+  private _bunnyPost_locations = this._api_url + '/bunnyPosts/locations';
+
+  get bunnyPost_locations(): string {
+    return this._bunnyPost_locations;
+  }
 
   get bunnyPost_trending_url(): string {
     return this._bunnyPost_trending_url;

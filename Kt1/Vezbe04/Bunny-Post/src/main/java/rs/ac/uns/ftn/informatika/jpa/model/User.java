@@ -12,15 +12,6 @@ import javax.validation.constraints.Email;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -181,6 +172,10 @@ public class User implements UserDetails {
 	@Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 	
+	@ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "location_id") 
+    private Location location;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -224,6 +219,14 @@ public class User implements UserDetails {
 	
 	public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+	
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	
+	public Location getLocation() {
+        return this.location;
     }
     
 	/*
