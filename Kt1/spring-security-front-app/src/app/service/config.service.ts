@@ -15,6 +15,12 @@ export class ConfigService {
   private _bunnyPost_trending_url = this._api_url + '/bunnyPosts/trending';
   private _bunnyPost_locations = this._api_url + '/bunnyPosts/locations';
 
+  private _care_org_messages_url = this._api_url + '/bunnyCareMessages';
+
+  get care_org_messages_url(){
+    return this._care_org_messages_url;
+  }
+
   get bunnyPost_locations(): string {
     return this._bunnyPost_locations;
   }

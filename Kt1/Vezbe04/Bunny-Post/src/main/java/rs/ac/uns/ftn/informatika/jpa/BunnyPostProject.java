@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.informatika.jpa;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,13 @@ public class BunnyPostProject {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BunnyPostProject.class, args);
+	}
+	
+	@Bean
+	public ConnectionFactory connectionFactory() {
+		CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
+		System.out.println("Bean connected");
+		return connectionFactory;
 	}
 
 }

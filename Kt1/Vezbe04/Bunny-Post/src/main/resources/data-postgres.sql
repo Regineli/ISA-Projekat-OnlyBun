@@ -118,3 +118,12 @@ VALUES
     (11, 2, 12, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
     (12, 2, 11, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
     (13, 2, 10, '2024-12-23 12:01:33');  -- Korisnik 3 lajkovao post 3
+    
+
+INSERT INTO care_messages (id, message_from, message_to, name, original_message_id, location_id) 
+VALUES
+('aad4f889-2596-41cc-bfd7-a833c873841f', 'Organizacija za brigu o zečevima', 'Only Bunns', 'test', 'aad4f889-2596-41cc-bfd7-a833c873841f', 17),
+('bce6f779-7532-4c8b-85fc-888fc832b7b2', 'Bunny Care', 'Bunnies United', 'important', 'bce6f779-7532-4c8b-85fc-888fc832b7b2', 18),
+('fa3c22bc-d1d5-4c90-990f-d8d11fd27180', 'Rabbit Rescue', 'Rabbit Lovers', 'urgent', 'fa3c22bc-d1d5-4c90-990f-d8d11fd27180', 16);
+
+

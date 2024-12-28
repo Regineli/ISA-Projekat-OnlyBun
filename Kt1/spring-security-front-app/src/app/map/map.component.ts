@@ -16,6 +16,7 @@ export class MapComponent implements OnInit {
   
   // List of posts with updated coordinates in Novi Sad
   posts: any[] = [];
+  careOrganizationMessages: any[] = [];
   
 
   constructor(private bunnyPostService: BunnyPostService) { }
@@ -31,6 +32,15 @@ export class MapComponent implements OnInit {
       if (data) {
         this.posts = data;  // Assign the fetched posts to this.posts
         console.log("Posts data:", this.posts);
+        //this.initializeMap();  // Now initialize the map after data is loaded
+      } else {
+        console.error("Failed to load locations.");
+      }
+
+      const careOrgData = await this.bunnyPostService.getCareOrganizationMessages().toPromise();
+      if (careOrgData) {
+        this.careOrganizationMessages = careOrgData;  // Assign the fetched posts to this.posts
+        console.log("care organization data:", this.careOrganizationMessages);
         this.initializeMap();  // Now initialize the map after data is loaded
       } else {
         console.error("Failed to load locations.");
@@ -62,7 +72,14 @@ export class MapComponent implements OnInit {
       iconSize: [60, 38],             // Prilagodi veličinu [širina, visina]
       iconAnchor: [16, 48],           // Tačka sidrišta (dno ikonice)
       popupAnchor: [0, -48]           // Tačka sidrišta za popup
-  });
+    });
+
+    const careOrgIcon = L.icon({
+      iconUrl: 'assets/icons/care_org.jpg', // Zameni sa relativnom putanjom do ikonice
+      iconSize: [60, 38],             // Prilagodi veličinu [širina, visina]
+      iconAnchor: [16, 48],           // Tačka sidrišta (dno ikonice)
+      popupAnchor: [0, -48]           // Tačka sidrišta za popup
+    });
 
     // Dodaj prilagođeni marker za lokaciju korisnika
     L.marker([this.userLocation.lat, this.userLocation.lng], { icon: userIcon })
@@ -73,14 +90,21 @@ export class MapComponent implements OnInit {
     // Dodaj markere za objave
     var i = 0;
     console.log("start locations");
-    console.log("Posts data: ", JSON.stringify(this.posts));
+    //console.log("Posts data: ", JSON.stringify(this.posts));
     this.posts.forEach(post => {
       i+=1;
       console.log("location[" + i + "]: " + post.location.latitude + ", " + post.location.longitude + ", " + post.details);
       L.marker([post.location.latitude, post.location.longitude], { icon: postIcon })
         .addTo(map)
-        .bindPopup(post.details)
-        .openPopup();
+        .bindPopup("test");
+    });
+
+
+    this.careOrganizationMessages.forEach(careMessage => {
+      console.log("care org " + careMessage.location.latitude + ", " + careMessage.location.longitude + ", " + careMessage.name);
+      L.marker([careMessage.location.latitude, careMessage.location.longitude], { icon: careOrgIcon })
+        .addTo(map)
+        .bindPopup(careMessage.name);
     });
   }
 

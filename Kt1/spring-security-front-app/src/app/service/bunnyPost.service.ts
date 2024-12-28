@@ -56,4 +56,8 @@ export class BunnyPostService {
   getBunnyPostLocations() {
     return this.apiService.get(this.config.bunnyPost_locations);
   }  
+
+  getCareOrganizationMessages(){
+    return this.apiService.get(this.config.care_org_messages_url);
+  }
 }
