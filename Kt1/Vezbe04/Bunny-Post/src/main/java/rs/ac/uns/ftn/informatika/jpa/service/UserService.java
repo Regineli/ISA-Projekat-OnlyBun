@@ -161,6 +161,10 @@ public class UserService {
         }
     }
     
+    public int getMaxUserId() {
+        Integer maxId = UserRepository.findMaxId(); // Pretpostavljamo da postoji metoda `findMaxId`
+        return maxId != null ? maxId : 0; // Ako nema korisnika, vraćamo 0
+    }
     
 
 }

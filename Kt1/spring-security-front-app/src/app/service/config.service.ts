@@ -16,6 +16,11 @@ export class ConfigService {
   private _bunnyPost_locations = this._api_url + '/bunnyPosts/locations';
 
   private _care_org_messages_url = this._api_url + '/bunnyCareMessages';
+  private _test_sign_up_conflict = this._auth_url + '/testRegistration';
+  
+  get test_sign_up_conflict(){
+    return this._test_sign_up_conflict;
+  }
 
   get care_org_messages_url(){
     return this._care_org_messages_url;

@@ -38,6 +38,7 @@
         </mat-form-field>
   
         <button [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Sign up</button>
+        <button color="primary" mat-raised-button (click)="testSignUpConflict()">Test Sign Up Conflict</button>
         <br>
         <button color="primary" mat-raised-button routerLink="/">Go Back</button>
       </form>

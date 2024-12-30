@@ -52,6 +52,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.EmailService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserLikePostService;
 import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 import rs.ac.uns.ftn.informatika.jpa.utils.TokenUtils;
+import rs.ac.uns.ftn.informatika.jpa.RateLimiter;
 import rs.ac.uns.ftn.informatika.jpa.dto.BunnyPostDTO; // Make sure you have a BunnyPostDTO class
 import javax.validation.Validator;
 
@@ -74,6 +75,9 @@ public class UserController {
 	
 	@Autowired
     private EmailService emailService;
+	
+	@Autowired
+    private RateLimiter rateLimiter;
 	
 	private final Validator validator;
 

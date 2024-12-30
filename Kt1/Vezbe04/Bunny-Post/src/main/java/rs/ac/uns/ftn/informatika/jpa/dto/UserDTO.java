@@ -2,9 +2,12 @@ package rs.ac.uns.ftn.informatika.jpa.dto;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import rs.ac.uns.ftn.informatika.jpa.model.Role;
 import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.UserStatus;
+import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
 public class UserDTO {
     private Integer id;
@@ -20,7 +23,7 @@ public class UserDTO {
     
     private List<String> followers;
     private List<String> following;
-
+        
     // Default constructor
     public UserDTO() {
 
@@ -39,7 +42,7 @@ public class UserDTO {
 
     public UserDTO(Integer id, String email, String firstName, String lastName, String username, 
             String password, String address, UserStatus status, List<String> followerUsernames, List<String> followingUsernames, List<Role> roles) {
-		 this.id = id;
+    	 this.id = id;
 		 this.email = email;
 		 this.firstName = firstName;
 		 this.lastName = lastName;
@@ -55,7 +58,7 @@ public class UserDTO {
 
     // Constructor for initializing UserDTO
     public UserDTO(Integer id, String email, String firstName, String lastName, String username, String password, String address, UserStatus status, List<Role> roles) {
-        this.id = id;
+    	this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;

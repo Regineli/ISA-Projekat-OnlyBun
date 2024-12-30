@@ -22,19 +22,19 @@ SELECT setval('location_id_seq', (SELECT MAX(id) FROM location) + 1);
 
 
 -- Inserting users
-INSERT INTO app_user (id, email, username, password, first_name, last_name, address, status, location_id) 
+INSERT INTO app_user (email, username, password, first_name, last_name, address, status, location_id) 
 VALUES 
-(1, 'sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', 2),
+('sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', 2),
 --(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
-(2, 'sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE', 5),
-(3, 'sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE', 5),
-(4, 'marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE', 5),
-(5, 'emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE', 4),
-(6, 'michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE', 6),
-(7, 'susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE', 7),
-(8, 'davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE', 8),
-(9, 'lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE', 10),
-(10, 'robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE', 9);
+('sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE', 5),
+('sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE', 5),
+('marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE', 5),
+('emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE', 4),
+('michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE', 6),
+('susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE', 7),
+('davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE', 8),
+('lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE', 10),
+('robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE', 9);
 
 -- Inserting comments for bunnyPosts
 INSERT INTO bunnyPost (id, details, user_id, photo, time, location_id, deleted, likes_count) VALUES

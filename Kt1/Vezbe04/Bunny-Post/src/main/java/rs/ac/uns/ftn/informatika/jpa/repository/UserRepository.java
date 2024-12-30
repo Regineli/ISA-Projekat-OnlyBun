@@ -93,4 +93,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // Check user by username and password
     @Query("SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
     public User findByUsernameAndPassword(String username, String password);
+    
+    @Query("SELECT COALESCE(MAX(u.id), 0) FROM User u")
+    Integer findMaxId();
 }

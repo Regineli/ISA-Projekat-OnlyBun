@@ -114,4 +114,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.userRegistered = false;
     this.router.navigate(['/']); // or wherever you want to redirect the user after closing
   }
+
+  testSignUpConflict(){
+    console.log("start test");
+    this.authService.testSignUpConflict();
+    console.log("end test");
+  }
 }

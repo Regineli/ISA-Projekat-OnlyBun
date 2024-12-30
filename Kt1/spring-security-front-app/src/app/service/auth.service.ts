@@ -66,4 +66,10 @@ export class AuthService {
     return this.access_token;
   }
 
+  testSignUpConflict(){
+    const requestBody = "Test string to simulate body, not used by server";
+    console.log("test url: " + this.config.test_sign_up_conflict);
+    this.apiService.post(this.config.test_sign_up_conflict, requestBody);
+  }
+
 }
