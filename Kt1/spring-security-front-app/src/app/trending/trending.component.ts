@@ -30,7 +30,8 @@ export class TrendingComponent implements OnInit{
         this.totalBunnyPosts = data.totalBunnyPosts;
         this.bunnyPostsInLastMonth = data.bunnyPostsInLastMonth;
         this.topBunnyPosts = data.topBunnyPosts;
-        this.topBunnyPostsInLastWeek = data.topBunnyPostsInLastWeek;        
+        this.topBunnyPostsInLastWeek = data.topBunnyPostsInLastWeek;     
+        console.log("cache param: " + data.cacheParam);   
       } else {
         console.log("No data received.");
       }
@@ -39,6 +40,7 @@ export class TrendingComponent implements OnInit{
     this.userService.getUsersTrending().subscribe((data) => {
       if (data) {
         this.topUsers = data;
+        console.log("top users: " + this.topUsers);
       } else {
         console.log("No data received.");
       }

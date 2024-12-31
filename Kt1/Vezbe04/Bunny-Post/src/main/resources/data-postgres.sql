@@ -107,17 +107,18 @@ INSERT INTO user_like_post (id, user_id, post_id, date_time)
 VALUES
     (1, 1, 1, '2024-12-18 13:45:30'),  -- Korisnik 1 lajkovao post 1
     (2, 1, 2, '2024-12-19 09:10:20'),  -- Korisnik 1 lajkovao post 2
-    (3, 1, 3, '2024-12-22 07:22:45'),  -- Korisnik 2 lajkovao post 3
-    (4, 3, 1, '2024-12-21 14:05:10'),  -- Korisnik 3 lajkovao post 1
-    (5, 3, 2, '2024-12-20 17:30:55'),  -- Korisnik 3 lajkovao post 2
-    (6, 3, 3, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (7, 1, 12, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (8, 3, 11, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (9, 3, 10, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (10, 3, 8, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (11, 2, 12, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (12, 2, 11, '2024-12-23 12:01:33'),  -- Korisnik 3 lajkovao post 3
-    (13, 2, 10, '2024-12-23 12:01:33');  -- Korisnik 3 lajkovao post 3
+    (3, 1, 3, CURRENT_TIMESTAMP),  -- Korisnik 2 lajkovao post 3
+    (4, 3, 1, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 1
+    (5, 3, 2, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 2
+    (6, 3, 3, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (7, 1, 12, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (8, 3, 11, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (9, 3, 10, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (10, 3, 8, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (11, 2, 12, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (12, 2, 11, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (13, 2, 10, CURRENT_TIMESTAMP),  -- Korisnik 3 lajkovao post 3
+    (14, 6, 1, '2024-12-19 09:10:20');  -- Korisnik 1 lajkovao post 2
     
 
 INSERT INTO care_messages (id, message_from, message_to, name, original_message_id, location_id) 

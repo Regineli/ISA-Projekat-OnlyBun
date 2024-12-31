@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   currentUser!:any;
+  private callCount: number = 0;
 
   constructor(
     private apiService: ApiService,
@@ -48,7 +49,13 @@ export class UserService {
   }
 
   getUsersTrending() {
-    return this.apiService.get(this.config.user_trending_url);
+    this.callCount += 1;  // Increment the call count
+
+    console.log("callCount user: ", this.callCount);
+
+    // Pass callCount as a query parameter
+    const args = { testParam: this.callCount.toString() };
+    return this.apiService.get(this.config.user_trending_url, args);
   }
 
   updateUser(user: any): Observable<any> {

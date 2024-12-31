@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.tools.DocumentationTool.Location;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -107,8 +109,11 @@ public class BunnyPostController {
 	
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = "/trending")
-	public ResponseEntity<Map<String, Object>> getBunnyPostStats() {
+	@Cacheable(value = "trendingPosts", key = "'trendingPostsCacheKey'")
+	public ResponseEntity<Map<String, Object>> getBunnyPostStats(@RequestParam(required = false) String testParam) {
+		System.out.println("trendingPosts Start!");
 	    // Step 1: Call BunnyPostService to get total number of BunnyPosts
+		System.out.println("data not cached bunny post: " + testParam);
 	    Integer totalBunnyPosts = bunnyPostService.getTotalBunnyPosts();
 
 	    // Step 2: Call BunnyPostService to get number of BunnyPosts in the last month
@@ -160,12 +165,14 @@ public class BunnyPostController {
 	        }
 	    }
 	    response.put("topBunnyPostsInLastWeek", topBunnyPostsInLastWeek);
+	    response.put("cacheParam", testParam);
 
 	    // Step 4: Return the response
 	    return ResponseEntity.ok(response);
 	}
 
 	@PostMapping(consumes = "application/json")
+	@CacheEvict(value = "trendingPosts", allEntries = true)
 	public ResponseEntity<BunnyPostDTO> saveBunnyPost(@RequestBody BunnyPostDTO bunnyPostDTO) {
 
 		BunnyPost BunnyPost = new BunnyPost();
@@ -192,6 +199,7 @@ public class BunnyPostController {
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@CacheEvict(value = {"trendingPosts", "trendingUsers"}, allEntries = true)
 	public ResponseEntity<Void> deleteBunnyPost(@PathVariable Integer id) {
 
 		BunnyPost bunnyPost = bunnyPostService.findOne(id);
@@ -257,6 +265,7 @@ public class BunnyPostController {
 
     // Like a post
     @PostMapping("/{postId}/like")
+    @CacheEvict(value = {"trendingPosts", "trendingUsers"}, allEntries = true)    
     public ResponseEntity<Void> likePost(@PathVariable Integer postId, @RequestParam Integer userId) {
         BunnyPost bunnyPost = bunnyPostService.findOne(postId);
         User user = userService.findOne(userId);
@@ -271,6 +280,7 @@ public class BunnyPostController {
 
     // Unlike a post
     @PostMapping("/{postId}/unlike")
+    @CacheEvict(value = {"trendingPosts", "trendingUsers"}, allEntries = true)
     public ResponseEntity<Void> unlikePost(@PathVariable Integer postId, @RequestParam Integer userId) {
         BunnyPost bunnyPost = bunnyPostService.findOne(postId);
         User user = userService.findOne(userId);
@@ -337,5 +347,12 @@ public class BunnyPostController {
         );
 
         return ResponseEntity.ok(newPost); 
+    }
+    
+    
+    @GetMapping("public/testClearCache")
+    @CacheEvict(value = {"trendingPosts", "trendingUsers"}, allEntries = true)
+    public ResponseEntity<String> clearCache(){
+    	return ResponseEntity.ok("cache cleared");
     }
 }

@@ -63,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/bunnyPosts/public/**").permitAll()
                 .antMatchers("/api/users/public/**").permitAll()
                 .antMatchers("/api/users/activate").permitAll()
+                .antMatchers("/api/bunnyPosts/testClearCache").permitAll()
                 .anyRequest().authenticated()
             .and()
             .cors().and()

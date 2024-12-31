@@ -35,6 +35,7 @@ export interface BunnyPost {
 
 @Injectable()
 export class BunnyPostService {
+  private callCount: number = 0;
 
   constructor(
     private apiService: ApiService,
@@ -50,8 +51,14 @@ export class BunnyPostService {
   }
 
   getBunnyPostTrending() {
-    return this.apiService.get(this.config.bunnyPost_trending_url);
-  }
+    this.callCount += 1;  // Increment the call count
+
+    console.log("callCount bunny post: ", this.callCount);
+
+    // Pass callCount as a query parameter
+    const args = { testParam: this.callCount.toString() };  // Convert to string if needed
+    return this.apiService.get(this.config.bunnyPost_trending_url, args);
+}
 
   getBunnyPostLocations() {
     return this.apiService.get(this.config.bunnyPost_locations);

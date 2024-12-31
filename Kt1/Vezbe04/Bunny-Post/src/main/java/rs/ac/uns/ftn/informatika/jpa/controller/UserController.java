@@ -14,6 +14,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -416,8 +417,10 @@ public class UserController {
     
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping(value = "/trending")
-    public ResponseEntity<List<UserDTO>> getTrending() {
+    @Cacheable(value = "trendingUsers", key = "'trendingUsersCacheKey'")
+    public ResponseEntity<List<UserDTO>> getTrending(@RequestParam(required = false) String testParam) {
         // Step 1: Get users with most likes in the last 7 days
+    	System.out.println("data not cached user: " + testParam);
         List<Integer> topUsers = userLikePostService.getTopUsersWithMostLikes();
 
         // Step 2: Retrieve UserDTOs for each user ID
