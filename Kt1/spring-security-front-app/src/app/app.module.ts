@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 import {ApiService} from './service/api.service';
 import {FooService} from './service/foo.service';
@@ -26,6 +28,7 @@ import { BunnyPostService } from './service/bunnyPost.service';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { TrendingComponent } from './trending/trending.component';
 import { MapComponent } from './map/map.component';
+import { BunnPostComponent } from './bunn-post/bunn-post.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +48,8 @@ import { MapComponent } from './map/map.component';
     NoopAnimationsModule,
     AngularMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
   ],
   providers: [ 
     {

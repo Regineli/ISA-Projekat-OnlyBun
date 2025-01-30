@@ -1,5 +1,6 @@
 /* Styling for each BunnyPost */
 .bunny-post {
+    position: relative;
     display: block;            /* Makes the post a block-level element */
     margin-bottom: 20px;       /* Adds space between each post */
     padding: 10px;             /* Adds padding inside each post */
@@ -46,3 +47,28 @@
     width: 100%;             /* Makes sure the center takes the full width */
     margin-top: 20px;        /* Adds some spacing at the top */
 }
+
+.top-right-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease; 
+  }
+  
+  
+  .top-right-button:hover {
+    background-color: #f57c00;
+    transform: scale(1.1);  
+  }
+
+  .disabled-button {
+    opacity: 0.5;  /* Zatamnjuje dugme */
+    cursor: not-allowed;  /* Menja pokazivač kursora na "nije dozvoljeno" */
+  }
+  

@@ -88,6 +88,7 @@ public class BunnyPostController {
 	    	BunnyPostDTO newPost = new BunnyPostDTO(post);
 	    	System.out.println("new post time" + newPost.getComments());
 	    	//newPost.setComments(this.getCommentsByBunnyPostId(newPost.getId()));
+	    	//System.out.println(newPost.toString());
 	        bunnyPostsDTO.add(newPost);
 	    }
 
@@ -332,27 +333,36 @@ public class BunnyPostController {
 	}
     
     @PostMapping("/add")
-    public ResponseEntity<BunnyPost> addNewPost(
-    		@RequestParam String email,
-	        @RequestParam String details,
-	        @RequestParam String photo,
-	        @RequestParam double longitude,
-	        @RequestParam double latitude){  
+    public ResponseEntity<BunnyPost> addNewPost(@RequestBody BunnyPostDTO request) {
         BunnyPost newPost = bunnyPostService.addNewPost(
-        		userService.findByEmail(email),
-                details,
-                photo,
-                longitude,
-                latitude
+                userService.findByEmail(request.getEmail()),
+                request.getDetails(),
+                request.getPhoto(),
+                request.getLongitude(),
+                request.getLatitude()
         );
 
         return ResponseEntity.ok(newPost); 
     }
+
     
     
     @GetMapping("public/testClearCache")
     @CacheEvict(value = {"trendingPosts", "trendingUsers"}, allEntries = true)
     public ResponseEntity<String> clearCache(){
     	return ResponseEntity.ok("cache cleared");
+    }
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/chosenForAdd")
+    public ResponseEntity<Void> ChosenForAdd(@RequestBody Integer postId) {
+    	BunnyPost bunnyPost = bunnyPostService.findOne(postId);
+
+        if (bunnyPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        bunnyPostService.sendPostForAdd(bunnyPost);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.activation.CommandMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.ac.uns.ftn.informatika.jpa.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.ExamDTO;
 import rs.ac.uns.ftn.informatika.jpa.dto.StudentDTO;
+import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.model.Comment;
 import rs.ac.uns.ftn.informatika.jpa.model.Exam;
+import rs.ac.uns.ftn.informatika.jpa.model.User;
+import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 import rs.ac.uns.ftn.informatika.jpa.service.CommentService;
+import rs.ac.uns.ftn.informatika.jpa.service.UserService;
 
 @RestController
 @RequestMapping(value = "api/comments")
@@ -29,6 +35,13 @@ public class CommentController {
 
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private BunnyPostService bunnypostService;
+
 
 	@GetMapping
 	public ResponseEntity<List<CommentDTO>> getComments() {
@@ -59,11 +72,17 @@ public class CommentController {
 
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<CommentDTO> saveComment(@RequestBody CommentDTO CommentDTO) {
-
+        System.out.print("stiglo");
 		Comment comment = new Comment();
 		comment.setDetails(CommentDTO.getDetails());
+		User user=userService.findOne(CommentDTO.getUserId());
+		comment.setUser(user);
+		BunnyPost post= bunnypostService.findOne(CommentDTO.getBunnyPostId());		
+		comment.setBunnyPost(post);
 
 		comment = commentService.save(comment);
+		post.getComments().add(comment);
+		bunnypostService.save(post);
 		return new ResponseEntity<>(new CommentDTO(comment), HttpStatus.CREATED);
 	}
 

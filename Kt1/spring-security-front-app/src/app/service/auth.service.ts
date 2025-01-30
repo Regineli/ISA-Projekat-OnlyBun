@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   logout() {
-    this.userService.currentUser = null;
+    this.userService.setCurrentUser(null);
     localStorage.removeItem("jwt");
     this.access_token = null;
     this.router.navigate(['/login']);

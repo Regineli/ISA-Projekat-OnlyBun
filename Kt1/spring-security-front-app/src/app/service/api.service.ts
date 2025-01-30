@@ -37,8 +37,6 @@ export class ApiService {
     if (args) {
       options['params'] = this.serialize(args);
     }
-    
-    
   
     return this.http.get(path, options)
       .pipe(catchError(this.checkError.bind(this)));
@@ -46,6 +44,7 @@ export class ApiService {
   
 
   post(path: string, body: any, customHeaders?: HttpHeaders): Observable<any> {
+    console.log("a")
     return this.request(path, body, RequestMethod.Post, customHeaders);
   }
 

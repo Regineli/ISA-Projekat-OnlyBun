@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {ConfigService} from './config.service';
+import { Observable } from 'rxjs';
   // Import DateTime from luxon or other date-time library
 
 export interface User {
@@ -31,6 +32,15 @@ export interface BunnyPost {
     user: User;
     comments: Comment[];
     showComments?: boolean;
+    chosenForAdd?: boolean;
+}
+
+export interface BunnyPostRequest {
+  email: string;
+  details: string;
+  photo: string;
+  longitude: string;
+  latitude: string;
 }
 
 @Injectable()
@@ -67,4 +77,19 @@ export class BunnyPostService {
   getCareOrganizationMessages(){
     return this.apiService.get(this.config.care_org_messages_url);
   }
+
+  addOrUpdateBunnyPost(data: BunnyPostRequest){
+    return this.apiService.post(this.config.add_bunnyPost,  data);
+  }
+
+  chosePostForAdd(postId: number){
+    return this.apiService.post(this.config.bunnyPost_chosePostForAdd,  postId);
+  }
+
+  getComments(postId: number): Observable<Comment[]>{
+    const params = { bunnyPostId: postId.toString() };
+    return this.apiService.get(this.config.comment_url, params);
+  }
+  
 }
+

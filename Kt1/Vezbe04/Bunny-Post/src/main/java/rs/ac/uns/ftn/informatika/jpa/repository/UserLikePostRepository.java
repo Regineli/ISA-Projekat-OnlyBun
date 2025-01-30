@@ -40,4 +40,6 @@ public interface UserLikePostRepository extends JpaRepository<UserLikePost, Inte
 		       "FROM UserLikePost ulp " +
 		       "WHERE ulp.userID = :userId")
 		Integer countUserLikes(Integer userId);
+	
+	List<UserLikePost> findByUserID(Integer userId);
 }

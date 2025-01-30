@@ -20,9 +20,14 @@ public class BunnyPostDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Adjust the pattern as needed
     private LocalDateTime time;
     private Integer likes;
+    private Double longitude;
+    private Double latitude;
+    private String email;
     private Location location;
+    private boolean chosenForAdd;
 
-    public BunnyPostDTO(BunnyPost bunnyPost) {
+   
+	public BunnyPostDTO(BunnyPost bunnyPost) {
         this(bunnyPost.getId(), bunnyPost.getDetails(), bunnyPost.getPhoto(), bunnyPost.getTime());
         if (bunnyPost.getUser() != null) {
             this.user = new UserDTO(bunnyPost.getUser());
@@ -39,10 +44,36 @@ public class BunnyPostDTO {
         if(bunnyPost.getLocation() != null) {
         	this.location = bunnyPost.getLocation();
         }
+        
+        this.chosenForAdd = bunnyPost.isChosenForAdd(); 
 
     }
     
-    public Location getLocation() {
+    public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Location getLocation() {
     	return this.location;
     }
     
@@ -93,4 +124,21 @@ public class BunnyPostDTO {
 		this.comments = commentDTOs;
 		
 	}
+	
+	public boolean isChosenForAdd() {
+		return chosenForAdd;
+	}
+
+	public void setChosenForAdd(boolean chosenForAdd) {
+		this.chosenForAdd = chosenForAdd;
+	}
+	
+	public boolean getChosenForAdd() {
+		return this.chosenForAdd;
+	}
+	
+	@Override
+    public String toString() {
+        return "BunnyPost [id=" + id + ", details=" + details + ", user=" + user.getFirstName() + ", photo=" + photo + "]"+", chosenForAdd= " + chosenForAdd+" ]";
+    }
 }

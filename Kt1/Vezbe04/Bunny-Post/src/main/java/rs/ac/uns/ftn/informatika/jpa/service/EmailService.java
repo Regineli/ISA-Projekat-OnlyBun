@@ -48,4 +48,20 @@ public class EmailService {
         javaMailSender.send(mail);
         System.out.println("Activation email sent!");
     }
+    
+    public void sendInactiveUserMail(User user, Integer likes) throws MailException {
+        System.out.println("Sending unactive user email...");
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("sarapopov678@gmail.com");
+        mail.setFrom("sarapopov678@gmail.com");  
+        mail.setSubject("You have been unactive");
+        mail.setText("Hello " + user.getFirstName() + ",\n\n" +
+                     "You have been inactive fo some time.\n\n" +
+                     "You have " + likes + " new likes,"+
+                     "\n\nKeep scrolling,\nYour Team");
+
+        javaMailSender.send(mail);
+        System.out.println("Activation email sent!");
+    }
 }

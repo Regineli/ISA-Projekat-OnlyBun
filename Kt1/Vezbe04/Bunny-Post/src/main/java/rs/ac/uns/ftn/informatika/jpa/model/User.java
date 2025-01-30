@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
@@ -103,6 +104,8 @@ public class User implements UserDetails {
 	@Column(name = "address", nullable = true)
 	private String address;
 	
+	@Column(name = "lastLogin", nullable = true)
+	private LocalDateTime lastLogin;
 	/*
 	@Transient  // This tells Hibernate not to map it to a column in the database
     public int getFollowersNumber() {
@@ -126,6 +129,14 @@ public class User implements UserDetails {
 
 	public Set<UserFollowers> getFollowing() {
 		return following;
+	}
+
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 
 	public void setFollowing(Set<UserFollowers> following) {
@@ -439,7 +450,7 @@ public class User implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", lastName=" + lastName + ", password=" + password + ", status=" + status + "]";
+		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", lastName=" + lastName + ", password=" + password + ", status=" + status + ", lastLogin="+lastLogin+"]";
 	}
 	
 	

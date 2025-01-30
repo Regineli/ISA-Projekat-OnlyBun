@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
@@ -14,6 +15,7 @@ import rs.ac.uns.ftn.informatika.jpa.service.BunnyPostService;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableCaching
+@EnableScheduling 
 public class BunnyPostProject {
 
 	@Bean

@@ -7,6 +7,15 @@
             <button *ngIf="!hasSignedIn()" mat-raised-button routerLink="/login">
                 <span>Login</span>
             </button>
+            <button *ngIf="hasSignedIn()" >
+                <img src="assets/icons/chat.png" alt="Button Icon" width="24" height="24"> 
+            </button>
+            <button *ngIf="hasSignedIn()" (click)="navigateToMap()">
+                <img src="assets/icons/map.png" alt="Button Icon" width="24" height="24"> 
+            </button>
+            <button *ngIf="hasSignedIn()" (click)="navigateToTrending()">
+                <img src="assets/icons/trending.png" alt="Button Icon" width="24" height="24"> 
+            </button>
             <button *ngIf="hasSignedIn()" [matMenuTriggerFor]="userMenu" class="greeting-button" 
             mat-button>
                 <span>Hello, {{userName()}}</span>
@@ -15,10 +24,6 @@
             mat-icon-button>
             </button>
             <mat-menu #userMenu ="matMenu">
-                <mat-button routerLink="/trending">Trending</mat-button>
-                <mat-divider></mat-divider>
-                <mat-button routerLink="/map">Map</mat-button>
-                <mat-divider></mat-divider>
                 <mat-button (click)="logout()">sign out</mat-button>
             </mat-menu>
 

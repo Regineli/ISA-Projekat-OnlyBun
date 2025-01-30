@@ -76,9 +76,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.form.value)
       .subscribe(data => {
         console.log(data);
-          this.userService.getMyInfo().subscribe();
-          console.log("loged user", this.userService.currentUser);
+        this.userService.getMyInfo().subscribe(loggedInUser => {
+          // Postavljamo trenutnog korisnika
+          this.userService.setCurrentUser(loggedInUser);
+          console.log("Logged in user: ", this.userService.currentUser);
+          // Preusmeravamo korisnika na povratnu URL adresu
           this.router.navigate([this.returnUrl]);
+        });
         },
         error => {
           console.log(error);

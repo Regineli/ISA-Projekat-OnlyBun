@@ -14,9 +14,12 @@ export class ConfigService {
   private _bunny_post_url = this._api_url + '/bunnyPosts/public';
   private _bunnyPost_trending_url = this._api_url + '/bunnyPosts/trending';
   private _bunnyPost_locations = this._api_url + '/bunnyPosts/locations';
+  private _bunnyPost_add=this._api_url+'/bunnyPosts/add';
+  private _bunnyPost_chosePostForAdd=this._api_url+'/bunnyPosts/chosenForAdd';
 
   private _care_org_messages_url = this._api_url + '/bunnyCareMessages';
   private _test_sign_up_conflict = this._auth_url + '/testRegistration';
+
   
   get test_sign_up_conflict(){
     return this._test_sign_up_conflict;
@@ -40,6 +43,14 @@ export class ConfigService {
 
   get update_user_url(): string {
     return this._update_user_url;
+  }
+
+  get bunnyPost_chosePostForAdd(): string{
+    return this._bunnyPost_chosePostForAdd;
+  }
+
+  get add_bunnyPost(): string{
+    return this._bunnyPost_add;
   }
 
   private _login_url = this._auth_url + '/login';
@@ -76,12 +87,20 @@ export class ConfigService {
   get signup_url(): string {
     return this._signup_url;
   }
-  private _comment_url = this._api_url + '/comments/public';
+  private _comment_url = this._api_url + '/bunnyPosts/public/comments';
 
   get comment_url(): string {
     console.log("comment url: ", this._comment_url);
     return this._comment_url;
   }
+
+  private _add_comment_url = this._api_url + '/comments';
+
+  get add_comment_url(): string {
+    console.log("comment url: ", this._comment_url);
+    return this._add_comment_url;
+  }
+
 
 
 }

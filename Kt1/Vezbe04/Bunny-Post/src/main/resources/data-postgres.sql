@@ -22,35 +22,35 @@ SELECT setval('location_id_seq', (SELECT MAX(id) FROM location) + 1);
 
 
 -- Inserting users
-INSERT INTO app_user (email, username, password, first_name, last_name, address, status, location_id) 
+INSERT INTO app_user (email, username, password, first_name, last_name, address, status, location_id, last_login) 
 VALUES 
-('sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', 2),
---(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE'),
-('sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE', 5),
-('sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE', 5),
-('marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE', 5),
-('emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE', 4),
-('michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE', 6),
-('susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE', 7),
-('davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE', 8),
-('lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE', 10),
-('robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE', 9);
+('sergej@nesto.com', 'sergej', '$2a$10$OPlU7rv98sfBJx5KdlsR4.Gv9Z7GT4fJCxALOd2AWs3rhfPOLPuEi', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', 2, '2024-06-16 11:45:00'),
+--(1, 'sergej@nesto.com', 'sergej', 'password123', 'Sergej', 'Vla', '123 Main St', 'ACTIVE', ),
+('sergej1@nesto.com', 'sergej1', '$2a$10$K7E92h5wRShEnfLshmvCfuUv9DmmPqA2QkCzhS.uwDZuxvKt1FROy', 'Serge1j', 'Nina', '456 Oak Ave', 'ACTIVE', 5, '2024-06-16 11:45:00'),
+('sergej2@nesto.com', 'sergej2', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Sergej1', 'Jovana', '789 Pine Rd', 'ACTIVE', 5, '2024-06-16 11:45:00'),
+('marksmith4@example.com', 'marksmith4', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG21', 'Mark', 'Smith', '101 Maple St', 'ACTIVE', 5, '2024-06-16 11:45:00'),
+('emilyjones5@example.com', 'emilyjones5', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Emily', 'Jones', '202 Birch St', 'ACTIVE', 4, '2024-06-16 11:45:00'),
+('michaelbrown6@example.com', 'michaelbrown6', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Michael', 'Brown', '303 Cedar St', 'ACTIVE', 6, '2024-06-16 11:45:00'),
+('susanwhite7@example.com', 'susanwhite7', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Susan', 'White', '404 Elm St', 'ACTIVE', 7, '2024-06-16 11:45:00'),
+('davidclark8@example.com', 'davidclark8', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'David', 'Clark', '505 Pine St', 'ACTIVE', 8, '2024-06-16 11:45:00'),
+('lauraallen9@example.com', 'lauraallen9', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Laura', 'Allen', '606 Spruce St', 'ACTIVE', 10, '2024-06-16 11:45:00'),
+('robertking10@example.com', 'robertking10', '$2a$10$5PQeHsmvqDgsGk1kPrRVM1t4ntqHlbPh9D2tbSt6TThUDeNhMJcG2', 'Robert', 'King', '707 Redwood St', 'ACTIVE', 9, '2024-06-16 11:45:00');
 
 -- Inserting comments for bunnyPosts
-INSERT INTO bunnyPost (id, details, user_id, photo, time, location_id, deleted, likes_count) VALUES
-(1, 'post 1 test', 1, 'src/main/webapp/images/photo_8.jpg', CURRENT_TIMESTAMP, 1, false, 0),
-(2, 'post 2 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0),
-(3, 'post 3 test', 2, 'photo3', '2023-06-20 11:45:00', 3, false, 0),
-(4, 'post 4 test', 1, 'photo1', CURRENT_TIMESTAMP, 5, false, 0),
-(5, 'post 5 test', 1, 'photo1', '2024-06-16 11:45:00', 11, false, 0),
-(6, 'post 6 test', 3, 'photo2', '2023-06-16 11:45:00', 12, false, 0),
-(7, 'post 7 test', 2, 'photo3', '2023-06-17 11:45:00', 13, false, 0),
-(8, 'post 8 test', 3, 'photo2', CURRENT_TIMESTAMP, 14, false, 0),
-(9, 'post 9 test', 2, 'photo3', '2023-06-20 11:45:00', 15, false, 0),
-(10, 'post 10 test', 1, 'photo1', CURRENT_TIMESTAMP, 16, false, 0),
-(11, 'post 11 test', 1, 'photo1', CURRENT_TIMESTAMP, 17, false, 0),
-(12, 'post 12 test', 3, 'photo2', CURRENT_TIMESTAMP, 18, false, 0),
-(13, 'post 13 test', 2, 'photo3', '2023-06-17 11:45:00', 10, false, 0);
+INSERT INTO bunnyPost (id, details, user_id, photo, time, location_id, deleted, likes_count, chosen_for_add) VALUES
+(1, 'post 1 test', 1, 'images/compressed_photo_8.jpg', CURRENT_TIMESTAMP, 1, false, 0, true),
+(2, 'post 2 test', 3, 'photo2', CURRENT_TIMESTAMP, 2, false, 0, false),
+(3, 'post 3 test', 2, 'photo3', '2023-06-20 11:45:00', 3, false, 0, false),
+(4, 'post 4 test', 1, 'photo1', CURRENT_TIMESTAMP, 5, false, 0, false),
+(5, 'post 5 test', 1, 'photo1', '2024-06-16 11:45:00', 11, false, 0, false),
+(6, 'post 6 test', 3, 'photo2', '2023-06-16 11:45:00', 12, false, 0, true),
+(7, 'post 7 test', 2, 'photo3', '2023-06-17 11:45:00', 13, false, 0, false),
+(8, 'post 8 test', 3, 'photo2', CURRENT_TIMESTAMP, 14, false, 0, false),
+(9, 'post 9 test', 2, 'photo3', '2023-06-20 11:45:00', 15, false, 0, false),
+(10, 'post 10 test', 1, 'photo1', CURRENT_TIMESTAMP, 16, false, 0, false),
+(11, 'post 11 test', 1, 'photo1', CURRENT_TIMESTAMP, 17, false, 0, false),
+(12, 'post 12 test', 3, 'photo2', CURRENT_TIMESTAMP, 18, false, 0, false),
+(13, 'post 13 test', 2, 'photo3', '2023-06-17 11:45:00', 10, false, 0, false);
 
 SELECT setval('bunnypost_id_seq', (SELECT MAX(id) FROM bunnypost) + 1);
 

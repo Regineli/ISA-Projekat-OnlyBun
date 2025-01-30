@@ -1,0 +1,33 @@
+<div class="main">
+    <div class="form-map-container">
+        <form  [formGroup] = "bunnyPostForm" class="keypoint-form-div">
+    
+            <div class="keypoint-form-div" 
+            >
+            <mat-form-field>
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" type="text"/>
+          </mat-form-field>
+                <mat-form-field  class="longitude-form">
+                    <mat-label>Longitude</mat-label>
+                    <input matInput formControlName="longitude" type="number"/>
+                </mat-form-field>
+                <mat-form-field  class="latitude-form">
+                    <mat-label>Latitude</mat-label>
+                    <input matInput formControlName="latitude" type="number"/>
+                </mat-form-field>
+                
+                
+                    <input
+                    type="file"
+                    (change)="onFileSelected($event)"/>
+                    <mat-label>Upload Image</mat-label>
+                
+                
+                <button mat-raised-button  type="submit" color="primary" (click)="createPost()">Create</button>
+            </div>
+        
+        </form>
+    
+    </div>
+  </div>

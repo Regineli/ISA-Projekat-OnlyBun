@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,9 @@ public class UserService {
 	
 	@Autowired
     private EmailService emailService;
+	
+	@Autowired
+    private UserLikePostService likePostService;;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -164,6 +169,27 @@ public class UserService {
     public int getMaxUserId() {
         Integer maxId = UserRepository.findMaxId(); // Pretpostavljamo da postoji metoda `findMaxId`
         return maxId != null ? maxId : 0; // Ako nema korisnika, vraćamo 0
+    }
+    
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void InactiveUserMail() {
+		System.out.println("its tiimee");
+
+    	List<User> users=findAll();
+    	for (User user : users) {
+    		if(user.getLastLogin() != null && 
+    		  (user.getLastLogin().isBefore(LocalDateTime.now().minusDays(7)) &&	user.getLastLogin().isAfter(LocalDateTime.now().minusDays(9)))) {	
+    			try {
+    				Integer likes=likePostService.numOfLikesSince(user,LocalDateTime.now().minusDays(7));
+    				emailService.sendInactiveUserMail(user, likes);
+					
+
+				} catch (MailException e) {
+					 System.out.println("Error sending email: " + e.getMessage());
+					    e.printStackTrace();
+				}
+    		}
+    		}
     }
     
 

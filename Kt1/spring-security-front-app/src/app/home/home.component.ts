@@ -4,6 +4,11 @@ import {UserService} from '../service/user.service';
 import {ConfigService} from '../service/config.service';
 import { BunnyPost, BunnyPostService } from '../service/bunnyPost.service';
 import { Router } from '@angular/router';  // Import the Router to navigate
+import { MatDialog } from '@angular/material/dialog';
+import { BunnPostComponent } from '../bunn-post/bunn-post.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommentService } from '../service/comment.service';
+
 
 @Component({
   selector: 'app-home',
@@ -16,19 +21,37 @@ export class HomeComponent implements OnInit {
   whoamIResponse = {};
   allUserResponse = {};
   currentUser!:any;
+  role!: any;
+  comment: string | undefined;
+  commentsOnPost: any;
+
+  commentForm = new FormGroup({
+    comm: new FormControl('', [Validators.required])
+  })
+  
 
   constructor(
     private config: ConfigService,
     private bunnyPostService: BunnyPostService,
-    private userService: UserService,
-    private router: Router
+    public userService: UserService,
+    private router: Router,
+    private dialog: MatDialog,
+    private commentService: CommentService
   ) {
   }
 
   ngOnInit() {
     this.loadBunnyPosts();    
+    this.userService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      console.log("current user home: ", this.currentUser);
+      this.role=this.currentUser.roles[0];
+    });
+
+    
     this.currentUser = this.userService.currentUser;
     console.log("current user home: ", this.currentUser);
+    
   }
 /*
   makeRequest(path:any) {
@@ -101,15 +124,49 @@ export class HomeComponent implements OnInit {
   // Function to comment on a bunny post
   commentPost(bunnyId: number) {
     console.log(`Commented on bunny post with ID: ${bunnyId}`);
-    // Add logic for commenting on a post (e.g., open comment modal or page)
+    if(this.commentForm.valid){
+      this.comment= this.commentForm.value.comm ?? '';
+
+      const commentData = {
+        details: this.comment,
+        bunnyPostId: bunnyId,
+        userId: this.currentUser.id
+      };
+    
+      const commentJson = JSON.stringify(commentData);
+      this.commentService.addComment(commentJson);
+      console.log(commentJson)
+      this.commentForm.reset();
+    }
+    console.log(this.comment)
+    
   }
+
 
   // Function to view comments for a bunny post
   viewComments(postId: number): void {
     const post = this.bunnyPosts.find(p => p.id === postId);
     if (post) {
-      post.showComments = !post.showComments; // Toggle visibility of comments
+      post.showComments = !post.showComments; // Toggle visibility
+  
+      if (post.showComments) { // Ako treba da se prikažu komentari
+        this.bunnyPostService.getComments(postId).subscribe(
+          (comments) => {
+            this.commentsOnPost = comments; // Čuvamo komentare kada stignu
+            console.log("Komentari učitani:", this.commentsOnPost);
+          },
+          (error) => {
+            console.error("Greška pri učitavanju komentara:", error);
+          }
+        );
+      }
     }
+  }
+  
+
+  getCommentsOnPost(postId: number){
+    console.log("qqqqqqqqqqqqqqqqqqqqqqqqqq")
+    return this.commentsOnPost=this.bunnyPostService.getComments(postId);
   }
 
   hasSignedIn() {
@@ -118,5 +175,35 @@ export class HomeComponent implements OnInit {
 
   navigateToUserDetails(username: string) {
     this.router.navigate(['/user-details', username]);  // Navigate to /user-details/:username
+  }
+
+  addPost(){
+    console.log('aaaaaa')
+    const dialogRef = this.dialog.open(BunnPostComponent, {
+      width: '400px', 
+      data: {}
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog was closed', result);
+      this.loadBunnyPosts();
+    });
+  }
+
+  addForAdd(postId: number){
+    console.log("loooog")
+    console.log(postId)
+    this.bunnyPostService.chosePostForAdd(postId).subscribe({
+      next: (response) => {
+        console.log('Post chosen for ad', response);
+      },
+      error: (error) => {
+        console.error('Error', error);
+      }
+    });  
+  }
+
+  navigateToTrending(): void {
+    this.router.navigate(['/trending']);
   }
 }

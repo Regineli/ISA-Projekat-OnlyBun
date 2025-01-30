@@ -3,14 +3,15 @@ import {ApiService} from './api.service';
 import {ConfigService} from './config.service';
 import {map} from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  currentUser!:any;
+  private currentUserSubject = new BehaviorSubject<any>(null); // BehaviorSubject za trenutnog korisnika
+  currentUser$ = this.currentUserSubject.asObservable(); // Observable za praćenje promena korisnika
   private callCount: number = 0;
 
   constructor(
@@ -19,12 +20,21 @@ export class UserService {
   ) {
   }
 
+  setCurrentUser(user: any) {
+    this.currentUserSubject.next(user);
+  }
+
+  // Dobijanje trenutnog korisnika
+  get currentUser(): any {
+    return this.currentUserSubject.value;
+  }
+
   getMyInfo() {
     return this.apiService.get(this.config.whoami_url)
       .pipe(map(user => {
         console.log("get MY Info user: " + JSON.stringify(user));
         console.log("who am I url: " + this.config.whoami_url);
-        this.currentUser = user;
+        this.setCurrentUser(user);
         return user;
       }));
   }

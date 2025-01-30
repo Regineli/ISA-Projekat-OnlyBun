@@ -104,6 +104,9 @@ public class BunnyPost {
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
+    
+    @Column(name = "chosenForAdd", nullable = true)
+    private boolean chosenForAdd = false;
 
     @ManyToMany
     @JoinTable(
@@ -258,6 +261,14 @@ public class BunnyPost {
 		return Objects.equals(details, s.details);
 	}
 
+	public boolean isChosenForAdd() {
+		return chosenForAdd;
+	}
+
+	public void setChosenForAdd(boolean chosenForAdd) {
+		this.chosenForAdd = chosenForAdd;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -313,6 +324,6 @@ public class BunnyPost {
 
     @Override
     public String toString() {
-        return "BunnyPost [id=" + id + ", details=" + details + ", user=" + user.getFirstName() + ", photo=" + photo + "]";
+        return "BunnyPost [id=" + id + ", details=" + details + ", user=" + user.getFirstName() + ", photo=" + photo + "]"+", chosenForAdd= " + chosenForAdd+" ]";
     }
 }

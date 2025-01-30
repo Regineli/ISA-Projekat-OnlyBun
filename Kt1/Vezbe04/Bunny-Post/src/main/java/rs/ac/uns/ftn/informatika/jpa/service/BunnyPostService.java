@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import io.swagger.v3.oas.models.PathItem;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import rs.ac.uns.ftn.informatika.jpa.Producer;
 import rs.ac.uns.ftn.informatika.jpa.dto.CommentDTO;
 import rs.ac.uns.ftn.informatika.jpa.model.BunnyPost;
 import rs.ac.uns.ftn.informatika.jpa.repository.BunnyPostRepository;
@@ -66,6 +68,9 @@ public class BunnyPostService {
 	@Autowired
     private LocationService locationService;
 	
+	@Autowired
+	private Producer producer;
+	
 	private Map<Integer, Location> locationCache = new HashMap<>();
 	
 	public BunnyPost findOne(Integer id) {
@@ -73,6 +78,10 @@ public class BunnyPostService {
 	}
 
 	public List<BunnyPost> findAll() {
+		List<BunnyPost> posts=bunnyPostRepository.findAll();
+		for(BunnyPost p: posts) {
+			System.out.println(p);
+		}
 		return bunnyPostRepository.findAll();
 	}
 	
@@ -83,7 +92,7 @@ public class BunnyPostService {
 	public BunnyPost save(BunnyPost bunnyPost) {
 		return bunnyPostRepository.save(bunnyPost);
 	}
-
+	
 	public void remove(Integer id) {
 		bunnyPostRepository.deleteById(id);
 	}
@@ -151,8 +160,8 @@ public class BunnyPostService {
 	    
 
 	    try {
-	        String directoryPath = "src/main/webapp/images/";
-	        String fileName = "photo_" + newPost.getId() + ".jpg"; 
+	        String directoryPath = "resources/static/images/";
+	        String fileName = "photo_" + newPost.getId() + ".jpg";
 	        String filePath = directoryPath + fileName;
 
 	        File directory = new File(directoryPath);
@@ -160,22 +169,24 @@ public class BunnyPostService {
 	            directory.mkdirs();
 	        }
 	        if (base64Photo.startsWith("data:image/png;base64,")) {
-                base64Photo = base64Photo.replace("data:image/png;base64,", "");
-            }
-	        
-	        base64Photo = base64Photo.replaceAll("\\s", ""); // Uklanja razmake
+	            base64Photo = base64Photo.replace("data:image/png;base64,", "");
+	        }
 
+	        base64Photo = base64Photo.replaceAll("\\s", ""); // Uklanja razmake
 
 	        byte[] imageBytes = Base64.getDecoder().decode(base64Photo);
 	        try (FileOutputStream fos = new FileOutputStream(filePath)) {
 	            fos.write(imageBytes);
 	        }
 
-	        newPost.setPhoto(filePath);
+	        newPost.setPhoto(directoryPath + fileName);
+	      //  Path path = Paths.get(newPost.getPhoto());
+	        //compressImage(path);
 
 	    } catch (IOException e) {
-	        e.printStackTrace();	        
+	        e.printStackTrace();
 	    }
+
 
 	    return save(newPost);
 	}
@@ -204,7 +215,7 @@ public class BunnyPostService {
 	@Scheduled(cron = "0 0 0 * * ?") 
 	public void compressOldImages() {
 	    LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
-	    Path start = Paths.get("src/main/webapp/images/");
+	    Path start = Paths.get("resources/static/images");
 	    
 	    try (Stream<Path> paths = Files.walk(start)) {
 	        paths.filter(Files::isRegularFile)
@@ -227,7 +238,7 @@ public class BunnyPostService {
         
         // Definišite putanju za kompresovanu sliku sa prefiksom 'compressed_'
         String compressedFileName = "compressed_" + inputFile.getName();
-        File compressedFile = new File("src/main/webapp/images/" + compressedFileName);
+        File compressedFile = new File("src/main/resources/static/images/" + compressedFileName);
         System.out.print("napravljen compresfile");
         try {
             // Učitajte originalnu sliku
@@ -334,7 +345,15 @@ public class BunnyPostService {
 
     // Pronađi post sa lajkovima kako bi se izbegla LazyInitializationException
     @Transactional
+    
     public BunnyPost findOneWithLikes(Integer postId) {
         return bunnyPostRepository.findOneWithLikes(postId);
     }
+    
+    public void sendPostForAdd(BunnyPost bunnyPost) {
+    	bunnyPost.setChosenForAdd(true);
+    	save(bunnyPost);
+    	producer.sendBunnyPost(bunnyPost, bunnyPost.getUser().getUsername());
+    }
+    
 }

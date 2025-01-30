@@ -1,8 +1,11 @@
 package rs.ac.uns.ftn.informatika.jpa.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import rs.ac.uns.ftn.informatika.jpa.model.User;
 import rs.ac.uns.ftn.informatika.jpa.model.UserLikePost;
 import rs.ac.uns.ftn.informatika.jpa.repository.UserLikePostRepository;
 
@@ -44,6 +47,10 @@ public class UserLikePostService {
     	return userLikePostRepository.countUserLikes(userId);
     };
     
+    public List<UserLikePost> getLikesForUser(Integer userId) {
+    	return userLikePostRepository.findByUserID(userId);
+    };
+    
     public List<Integer> get5TopLikedBunnyPostsInLastWeek() {
         // Calculate last week (7 days ago)
     	LocalDateTime lastWeek = LocalDateTime.now().minusDays(7);
@@ -68,6 +75,17 @@ public class UserLikePostService {
         
         // Return the result
         return topLikedBunnyPosts;
+    }
+    
+    public Integer numOfLikesSince (User user, LocalDateTime time) {
+    	List<UserLikePost> likePost=getLikesForUser(user.getId());
+    	Integer res=0;
+    	for(UserLikePost like: likePost) {
+    		if(like.getDateTime().isAfter(time)){
+    			res++;
+    		}
+    	}
+    	return res;
     }
 
 }
